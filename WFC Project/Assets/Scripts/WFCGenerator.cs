@@ -7,10 +7,12 @@ public class WFCGenerator : MonoBehaviour {
     
     [Space , Header("Generator Settings")]
     public GameObject cellStartingPos;
-    public int gridWidth, gridLength, gridHeight;
+    public int gridWidth, gridHeight, gridDepth;
     public float cellSizeX, cellSizeY, cellSizeZ;
 
     [Space, Header("Debug Settings")]
+    public bool displayCellIDs = false;
+    public bool displayCellLines = false;
 
     private gridCell[,,] gridArray;
 
@@ -26,12 +28,12 @@ public class WFCGenerator : MonoBehaviour {
     //Overall script to generate grid 
     void regenerateGrid() {
         //Remake Array WIth Desired Size
-        gridArray = new gridCell[gridWidth, gridHeight, gridLength];
+        gridArray = new gridCell[gridWidth, gridHeight, gridDepth];
 
         //iterates through the entier grid and initializes the struct at that spesific ID, with all the required information
         for (int x = 0; x < gridWidth; x++) {
-            for (int y = 0; y < gridLength; y++) {
-                for (int z = 0; z < gridHeight; z++) {
+            for (int y = 0; y < gridHeight; y++) {
+                for (int z = 0; z < gridDepth; z++) {
                     
                     //temp variables to do basic calculation
                     Vector3Int tempId = new Vector3Int(x, y ,z);
@@ -61,62 +63,83 @@ public class WFCGenerator : MonoBehaviour {
         //to stop errors from happening this just allows me to turn on and off gizmos at will
         if (gridArray == null) return;
 
-        //itterates through each cell and places a lable explaining its Cell ID
-        for (int x = 0; x < gridArray.GetLength(0); x++) {
-            for (int y = 0; y < gridArray.GetLength(1); y++) {
-                for (int z = 0; z < gridArray.GetLength(2); z++) {
-                    Handles.color = Color.blue;
+        if (displayCellIDs)
+        {
+            //itterates through each cell and places a lable explaining its Cell ID
+            for (int x = 0; x < gridArray.GetLength(0); x++)
+            {
+                for (int y = 0; y < gridArray.GetLength(1); y++)
+                {
+                    for (int z = 0; z < gridArray.GetLength(2); z++)
+                    {
+                        Handles.color = Color.blue;
 
-                    Vector3 handleOffset = new Vector3(gridArray[x, y, z].cellPos.x + (cellSizeX/2), gridArray[x, y, z].cellPos.y + (cellSizeY/2), gridArray[x, y, z].cellPos.z + (cellSizeZ/2));
-                    Handles.Label(handleOffset, gridArray[x, y, z].cellId.ToString());
+                        Vector3 handleOffset = new Vector3(gridArray[x, y, z].cellPos.x + (cellSizeX / 2), gridArray[x, y, z].cellPos.y + (cellSizeY / 2), gridArray[x, y, z].cellPos.z + (cellSizeZ / 2));
+                        Handles.Label(handleOffset, gridArray[x, y, z].cellId.ToString());
+                    }
                 }
             }
         }
-
-        //Generates top and left lines
-        /*Gizmos.color = Color.black;
+        if(displayCellLines)
         {
-            //draws the width line
-            float widthLineEndPosX = cellStartingPos.transform.position.x + (cellSizeX * gridWidth);
-            Vector3 widthLineEndPos = new Vector3(widthLineEndPosX, 0, cellStartingPos.transform.position.z);
-            Gizmos.DrawLine(cellStartingPos.transform.position, widthLineEndPos);
+            //Generates the inside grid lines
+            //Draws the Width Lines
+            for (int z = 0; z < gridArray.GetLength(2) + 1; z++)
+            {
+                for (int y = 0; y < gridArray.GetLength(1) + 1; y++)
+                {
+                    //Create a border of colour within the grid
+                    if (z == 0 || y == 0 || z == gridArray.GetLength(2) || y == gridArray.GetLength(1)) Gizmos.color = Color.black;
+                    else Gizmos.color = Color.grey;
 
-            //draws the length line
-            float lengthLineEndPosZ = cellStartingPos.transform.position.z + (cellSizeZ * gridLength);
-            Vector3 lengthLineEndPos = new Vector3(cellStartingPos.transform.position.x, 0, lengthLineEndPosZ);
-            Gizmos.DrawLine(cellStartingPos.transform.position, lengthLineEndPos);
+                    //Calculations
+                    float lineZPos = cellStartingPos.transform.position.z + (z * cellSizeZ);
+                    float lineYPos = cellStartingPos.transform.position.y + (y * cellSizeY);
+                    Vector3 lineStartPos = new Vector3(cellStartingPos.transform.position.x, lineYPos, lineZPos);
+                    Vector3 lineEndPos = new Vector3(cellStartingPos.transform.position.x + (gridWidth * cellSizeX), lineYPos, lineZPos);
+
+                    Gizmos.DrawLine(lineStartPos, lineEndPos);
+                }
+            }
+
+            //Draws the height lines
+            for (int x = 0; x < gridArray.GetLength(0) + 1; x++)
+            {
+                for (int z = 0; z < gridArray.GetLength(2) + 1; z++)
+                {
+                    //Create a border of colour within the grid
+                    if (x == 0 || z == 0 || x == gridArray.GetLength(0) || z == gridArray.GetLength(2)) Gizmos.color = Color.black;
+                    else Gizmos.color = Color.grey;
+
+                    //Calculations
+                    float lineXPos = cellStartingPos.transform.position.x + (x * cellSizeX);
+                    float lineZPos = cellStartingPos.transform.position.z + (z * cellSizeZ);
+                    Vector3 lineStartPos = new Vector3(lineXPos, cellStartingPos.transform.position.y, lineZPos);
+                    Vector3 lineEndPos = new Vector3(lineXPos, cellStartingPos.transform.position.y + (gridHeight * cellSizeY), lineZPos);
+
+                    Gizmos.DrawLine(lineStartPos, lineEndPos);
+                }
+            }
+
+            //Draws the depth lines
+            for (int x = 0; x < gridArray.GetLength(0) + 1; x++)
+            {
+                for (int y = 0; y < gridArray.GetLength(1) + 1; y++)
+                {
+                    //Create a border of colour within the grid
+                    if (x == 0 || y == 0 || x == gridArray.GetLength(0)|| y == gridArray.GetLength(1)) Gizmos.color = Color.black;
+                    else Gizmos.color = Color.grey;
+
+                    //Calculations
+                    float lineXPos = cellStartingPos.transform.position.x + (x * cellSizeX);
+                    float lineYPos = cellStartingPos.transform.position.y + (y * cellSizeY);
+                    Vector3 lineStartPos = new Vector3(lineXPos, lineYPos, cellStartingPos.transform.position.z);
+                    Vector3 lineEndPos = new Vector3(lineXPos, lineYPos, cellStartingPos.transform.position.z + (gridDepth * cellSizeZ));
+
+                    Gizmos.DrawLine(lineStartPos, lineEndPos);
+                }
+            }
         }
-
-        //itterates through each horizontal grid cell to place a line down
-        /*for (int x = 0; x < gridArray.GetLength(0); x++) {
-            Gizmos.color = Color.white;
-            if (x == gridArray.GetLength(0) - 1) Gizmos.color = Color.black;
-            float tempStartPosX = gridArray[x, 0].cellPos.x + cellSizeX;
-            float tempStartPosZ = gridArray[x, 0].cellPos.z;
-            Vector3 tempStartPos = new Vector3(tempStartPosX, 0, tempStartPosZ);
-
-            float tempEndPosX = gridArray[x, 0].cellPos.x + cellSizeX;
-            float tempEndPosZ = gridArray[x, 0].cellPos.z + cellSizeZ * gridLength;
-            Vector3 tempEndingPos = new Vector3(tempEndPosX, 0, tempEndPosZ);
-
-            Gizmos.DrawLine(tempStartPos, tempEndingPos);
-        }
-
-        //Iterates through each vertical grid cell to place a line down
-        for (int z = 0; z < gridArray.GetLength(1); z++) {
-            Gizmos.color = Color.white;
-            if (z == gridArray.GetLength(1) - 1) Gizmos.color = Color.black;
-            float tempStartPosZ = gridArray[0, z].cellPos.z + cellSizeZ;
-            float tempStartPosX = gridArray[0, z].cellPos.x;
-            Vector3 tempStartPos = new Vector3(tempStartPosX, 0, tempStartPosZ);
-
-            float tempEndPosZ = gridArray[0, z].cellPos.z + cellSizeZ;
-            float tempEndPosX = gridArray[0, z].cellPos.x + cellSizeX * gridWidth;
-            Vector3 tempEndingPos = new Vector3(tempEndPosX, 0, tempEndPosZ);
-
-            Gizmos.DrawLine(tempStartPos, tempEndingPos);
-        }*/
-
     }
 
     //gets the grid position of the cell in real world space

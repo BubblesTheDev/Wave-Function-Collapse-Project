@@ -362,12 +362,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellStartingPos: {fileID: 838287154}
-  gridWidth: 5
-  gridLength: 5
-  gridHeight: 5
+  gridWidth: 10
+  gridHeight: 10
+  gridDepth: 10
   cellSizeX: 1
-  cellSizeY: 3
-  cellSizeZ: 6
+  cellSizeY: 1
+  cellSizeZ: 1
 --- !u!4 &1456003384
 Transform:
   m_ObjectHideFlags: 0
