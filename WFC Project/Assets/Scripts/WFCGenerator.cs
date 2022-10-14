@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System;
 
 public class WFCGenerator : MonoBehaviour {
     
-    [Space , Header("Generator Settings")]
+
+    [Space , Header("Simple Generator Settings")]
     public GameObject cellStartingPos;
     public int gridWidth, gridHeight, gridDepth;
     public float cellSizeX, cellSizeY, cellSizeZ;
@@ -13,6 +15,7 @@ public class WFCGenerator : MonoBehaviour {
     [Space, Header("Debug Settings")]
     public bool displayCellIDs = false;
     public bool displayCellLines = false;
+    public bool advancedSettings = false;
 
     private gridCell[,,] gridArray;
 
@@ -26,7 +29,7 @@ public class WFCGenerator : MonoBehaviour {
     }
 
     //Overall script to generate grid 
-    void regenerateGrid() {
+    public void regenerateGrid() {
         //Remake Array WIth Desired Size
         gridArray = new gridCell[gridWidth, gridHeight, gridDepth];
 
@@ -60,7 +63,7 @@ public class WFCGenerator : MonoBehaviour {
     }
 
     private void OnDrawGizmos() {
-        //to stop errors from happening this just allows me to turn on and off gizmos at will
+        //to stop errors from happening if the array is not initalized
         if (gridArray == null) return;
 
         if (displayCellIDs)
@@ -158,7 +161,6 @@ public class WFCGenerator : MonoBehaviour {
 }
 
 
-
 //Cell struct with basic information required
 public struct gridCell {
     public Vector3Int cellId;
@@ -171,3 +173,4 @@ public struct gridCell {
         cellSize = Size;
     }
 }
+

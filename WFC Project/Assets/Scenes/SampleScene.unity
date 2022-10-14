@@ -365,9 +365,12 @@ MonoBehaviour:
   gridWidth: 10
   gridHeight: 10
   gridDepth: 10
-  cellSizeX: 1
-  cellSizeY: 1
-  cellSizeZ: 1
+  cellSizeX: 5
+  cellSizeY: 5
+  cellSizeZ: 5
+  displayCellIDs: 0
+  displayCellLines: 0
+  advancedSettings: 0
 --- !u!4 &1456003384
 Transform:
   m_ObjectHideFlags: 0
