@@ -6,19 +6,23 @@ using System;
 
 public class WFCGenerator : MonoBehaviour {
     
-
-    [Space , Header("Simple Generator Settings")]
+    //Simple grid generator settings
     public GameObject cellStartingPos;
     public int gridWidth, gridHeight, gridDepth;
     public float cellSizeX, cellSizeY, cellSizeZ;
 
-    [Space, Header("Debug Settings")]
+    //Advanced grid generator settings
+    public bool centerGridOnGeneration = false;
+
+
+    //Debug options settings
     public bool displayCellIDs = false;
     public bool displayCellLines = false;
     public bool advancedSettings = false;
 
-    private gridCell[,,] gridArray;
 
+    //Hidden variables
+    private gridCell[,,] gridArray;
 
     private void Awake() {
         regenerateGrid();
@@ -75,7 +79,6 @@ public class WFCGenerator : MonoBehaviour {
                 {
                     for (int z = 0; z < gridArray.GetLength(2); z++)
                     {
-                        Handles.color = Color.blue;
 
                         Vector3 handleOffset = new Vector3(gridArray[x, y, z].cellPos.x + (cellSizeX / 2), gridArray[x, y, z].cellPos.y + (cellSizeY / 2), gridArray[x, y, z].cellPos.z + (cellSizeZ / 2));
                         Handles.Label(handleOffset, gridArray[x, y, z].cellId.ToString());

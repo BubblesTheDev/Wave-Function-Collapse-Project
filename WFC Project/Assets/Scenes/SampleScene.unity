@@ -368,8 +368,8 @@ MonoBehaviour:
   cellSizeX: 5
   cellSizeY: 5
   cellSizeZ: 5
-  displayCellIDs: 0
-  displayCellLines: 0
+  displayCellIDs: 1
+  displayCellLines: 1
   advancedSettings: 0
 --- !u!4 &1456003384
 Transform:
