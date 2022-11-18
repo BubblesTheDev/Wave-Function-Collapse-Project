@@ -14,6 +14,11 @@ public class WFCGenerator : MonoBehaviour {
     //Advanced grid generator settings
     public bool centerGridOnGeneration = false;
 
+    //Enviroment generator Settings
+    public assetDataList assetList;
+    public Vector3 startingCellId;
+    [Range(0.01f,1)]
+    public float airPercentage;
 
     //Debug options settings
     public bool displayCellIDs = false;
@@ -53,6 +58,7 @@ public class WFCGenerator : MonoBehaviour {
         }
     }
 
+    //this prints the grid info to the consol when called
     void printGridInfo() {
         if (gridArray == null) return;
         //iterates through the entier grid 
@@ -176,4 +182,6 @@ public struct gridCell {
         cellSize = Size;
     }
 }
+
+
 
