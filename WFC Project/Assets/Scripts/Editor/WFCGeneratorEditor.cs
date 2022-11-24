@@ -26,6 +26,9 @@ public class WFCGeneratorEditor : Editor {
             //labels and fields for the width, height and depth of the grid
             GUILayout.Label("Simple Generator Settings", EditorStyles.boldLabel);
             gen.cellStartingPos = (GameObject)EditorGUILayout.ObjectField("Grid Starting Position", gen.cellStartingPos, typeof(GameObject), true);
+            gen.dataList = (assetDataList)EditorGUILayout.ObjectField("Given Data List", gen.dataList, typeof(assetDataList), true);
+
+
             GUILayout.Space(10);
             {
                 gen.gridWidth = EditorGUILayout.IntField("Grid Width", gen.gridWidth);
@@ -84,5 +87,6 @@ public class WFCGeneratorEditor : Editor {
         }
 
         if (GUILayout.Button("Regenerate Grid")) gen.regenerateGrid();
+        if (GUILayout.Button("Regenerate Enviroment")) gen.generateMap();
     }
 }

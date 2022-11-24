@@ -8,13 +8,12 @@ public class assetData : ScriptableObject
 {
     public string assetName;
     public int assetId;
-    public bool isAssetAir;
     public GameObject primaryAsset;
-    public GameObject[] allowedAssetsYPos;
-    public GameObject[] allowedAssetsYNeg;
-    public GameObject[] allowedAssetsXPos;
-    public GameObject[] allowedAssetsXNeg;
-    public GameObject[] allowedAssetsZPos;
-    public GameObject[] allowedAssetsZNeg;
+    public assetData[] allowedAssetsAbove;
+    public assetData[] allowedAssetsBelow;
+    public assetData[] allowedAssetsRight;
+    public assetData[] allowedAssetsLeft;
+    public assetData[] allowedAssetsForward;
+    public assetData[] allowedAssetsBackward;
 }
 
