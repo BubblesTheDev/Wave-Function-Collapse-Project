@@ -8,7 +8,7 @@ public class WFCGeneratorEditor : Editor {
 
     public bool advancedGridFoldOut = false;
 
-    public override void OnInspectorGUI() {
+    /*public override void OnInspectorGUI() {
         //DrawDefaultInspector();
         WFCGenerator gen = (WFCGenerator)target;
 
@@ -88,5 +88,5 @@ public class WFCGeneratorEditor : Editor {
 
         if (GUILayout.Button("Regenerate Grid")) gen.regenerateGrid();
         if (GUILayout.Button("Regenerate Enviroment")) gen.generateMap();
-    }
+    }*/
 }
