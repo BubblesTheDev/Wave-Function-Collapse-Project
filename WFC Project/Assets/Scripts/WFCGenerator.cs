@@ -19,7 +19,7 @@ public class WFCGenerator : MonoBehaviour
 
     //Level Generator Settings
     public assetDataList dataList;
-    public List<gridCell> emptyCells = new List<gridCell>();
+    //public List<gridCell> emptyCells = new List<gridCell>();
 
     //Debug options settings
     public bool displayCellIDs = false;
@@ -33,16 +33,21 @@ public class WFCGenerator : MonoBehaviour
     private void Awake()
     {
         regenerateGrid();
-        foreach (gridCell cell in gridArray)
+        /*foreach (gridCell cell in gridArray)
         {
             emptyCells.Add(cell);
-        }
+        }*/
     }
 
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.Space)) printGridInfo();
-        if (Input.GetKeyUp(KeyCode.F1)) generateMap();
+        if (Input.GetKeyUp(KeyCode.F1))
+        {
+            print(gridWidth);
+            print(gridHeight);
+            print(gridDepth);
+        }
     }
 
     //Overall script to generate grid 
@@ -75,14 +80,19 @@ public class WFCGenerator : MonoBehaviour
     {
         if (gridArray == null) return;
         //iterates through the entier grid 
-        for (int x = 0; x < gridArray.GetLength(0); x++)
+        for (int x = 0; x < gridWidth; x++)
         {
-            for (int y = 0; y < gridArray.GetLength(1); y++)
+            //print("On the x axis");
+            for (int y = 0; y < gridHeight; y++)
             {
-                for (int z = 0; z < gridArray.GetLength(2); z++)
+                //print("On the y axis");
+
+                for (int z = 0; z < gridDepth; z++)
                 {
+                    //print("On the z axis");
+
                     //logs each grid cell, at their position, with their id, and how big they are
-                    Debug.Log("Has an ID of: " + gridArray[x, y, z].cellId + ", and a size of: " + gridArray[x, y, z].cellSize + ", Its asset is " + gridArray[x,y,z].dataAssigned.assetName);
+                    Debug.Log("Cell of id " + gridArray[x, y, z].cellId + " Is Collapsed with " + gridArray[x, y, z].dataAssigned.assetName); ;
                 }
             }
         }
@@ -91,25 +101,22 @@ public class WFCGenerator : MonoBehaviour
     //This part of the code is now generating the map overall
     public void generateMap()
     {
-
         for (int i = 0; i < gridWidth * gridHeight * gridDepth; i++)
         {
-            int randomCellId = Random.Range(0, emptyCells.Count);
-            gridCell currentCell = emptyCells[randomCellId];
-            if (currentCell.dataAssigned == null)
+            Vector3Int randomCellId = new Vector3Int(Random.Range(0, gridWidth), Random.Range(0, gridHeight), Random.Range(0, gridDepth));
+            while (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned != null)
             {
-                Vector3 worldPositionForCell = getGridPos(currentCell.cellId.x, currentCell.cellId.y, currentCell.cellId.z);
-                Vector3 posOffset = new Vector3(cellSizeX / 2, cellSizeY / 2, cellSizeZ / 2);
-
-                assetData dataToAssign = currentCell.allowedAsssetsInCell[Random.Range(0, currentCell.allowedAsssetsInCell.Count)];
-                currentCell.dataAssigned = dataToAssign;
-
-                //setAdjacentRules(currentCell.cellId, currentCell.dataAssigned);
-                
-                currentCell.cellObj = Instantiate(currentCell.dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.identity, GameObject.Find("Enviroment Holder").transform);
-
-                gridArray[currentCell.cellId.x, currentCell.cellId.y, currentCell.cellId.z] = currentCell;
+                randomCellId = new Vector3Int(Random.Range(0, gridWidth), Random.Range(0, gridHeight), Random.Range(0, gridDepth));
+                if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned == null) break;
             }
+            Vector3 worldPositionForCell = getGridPos(randomCellId.x, randomCellId.y, randomCellId.z);
+            Vector3 posOffset = new Vector3(cellSizeX / 2, cellSizeY / 2, cellSizeZ / 2);
+
+            gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned = gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell[Random.Range(0, gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count)];
+
+            //setAdjacentRules(currentCell.cellId, currentCell.dataAssigned);
+
+            gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj = Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.identity, GameObject.Find("Enviroment Holder").transform);
         }
     }
 
