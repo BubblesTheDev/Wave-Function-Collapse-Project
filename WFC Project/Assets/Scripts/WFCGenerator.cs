@@ -6,8 +6,7 @@ using System;
 using Random = UnityEngine.Random;
 using System.Linq;
 
-public class WFCGenerator : MonoBehaviour
-{
+public class WFCGenerator : MonoBehaviour {
 
     //Simple grid generator settings
     public GameObject cellStartingPos;
@@ -30,65 +29,51 @@ public class WFCGenerator : MonoBehaviour
     //Hidden variables
     private gridCell[,,] gridArray;
 
-    private void Awake()
-    {
+    private void Awake() {
         regenerateGrid();
-        /*foreach (gridCell cell in gridArray)
-        {
-            emptyCells.Add(cell);
-        }*/
     }
 
-    private void Update()
-    {
+    private void Update() {
         if (Input.GetKeyUp(KeyCode.Space)) printGridInfo();
-        if (Input.GetKeyUp(KeyCode.F1))
-        {
-            print(gridWidth);
-            print(gridHeight);
-            print(gridDepth);
+        if (Input.GetKeyUp(KeyCode.Alpha0)) {
+            for (int i = 0; i < gridArray[0, 0, 0].allowedAsssetsInCell.Count; i++) {
+                print("The cell of 0,0,0 allows " + gridArray[0, 0, 0].allowedAsssetsInCell[i].assetName);
+            }
         }
+        
     }
 
     //Overall script to generate grid 
-    public void regenerateGrid()
-    {
+    public void regenerateGrid() {
         //Remake Array WIth Desired Size
         gridArray = new gridCell[gridWidth, gridHeight, gridDepth];
 
         //iterates through the entier grid and initializes the struct at that spesific ID, with all the required information
-        for (int x = 0; x < gridWidth; x++)
-        {
-            for (int y = 0; y < gridHeight; y++)
-            {
-                for (int z = 0; z < gridDepth; z++)
-                {
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                for (int z = 0; z < gridDepth; z++) {
 
                     //temp variables to do basic calculation
                     Vector3Int tempId = new Vector3Int(x, y, z);
                     Vector3 tempSize = new Vector3(cellSizeX, cellSizeY, cellSizeZ);
 
                     //initializing the cell at a spesific grid ID
-                    gridArray[x, y, z] = new gridCell(tempId, getGridPos(x, y, z), tempSize, dataList);
+                    gridArray[x, y, z] = new gridCell(tempId, getCellPosInWorldspace(x, y, z), tempSize, dataList);
                 }
             }
         }
     }
 
     //Prints off every grid id as well as the size of that speisfic cell
-    void printGridInfo()
-    {
+    void printGridInfo() {
         if (gridArray == null) return;
         //iterates through the entier grid 
-        for (int x = 0; x < gridWidth; x++)
-        {
+        for (int x = 0; x < gridWidth; x++) {
             //print("On the x axis");
-            for (int y = 0; y < gridHeight; y++)
-            {
+            for (int y = 0; y < gridHeight; y++) {
                 //print("On the y axis");
 
-                for (int z = 0; z < gridDepth; z++)
-                {
+                for (int z = 0; z < gridDepth; z++) {
                     //print("On the z axis");
 
                     //logs each grid cell, at their position, with their id, and how big they are
@@ -99,118 +84,123 @@ public class WFCGenerator : MonoBehaviour
     }
 
     //This part of the code is now generating the map overall
-    public void generateMap()
-    {
-        for (int i = 0; i < gridWidth * gridHeight * gridDepth; i++)
-        {
+    public void generateMap() {
+        for (int i = 0; i < gridWidth * gridHeight * gridDepth; i++) {
             Vector3Int randomCellId = new Vector3Int(Random.Range(0, gridWidth), Random.Range(0, gridHeight), Random.Range(0, gridDepth));
-            while (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned != null)
-            {
+            while (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned != null) {
                 randomCellId = new Vector3Int(Random.Range(0, gridWidth), Random.Range(0, gridHeight), Random.Range(0, gridDepth));
                 if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned == null) break;
             }
-            Vector3 worldPositionForCell = getGridPos(randomCellId.x, randomCellId.y, randomCellId.z);
+            Vector3 worldPositionForCell = getCellPosInWorldspace(randomCellId.x, randomCellId.y, randomCellId.z);
             Vector3 posOffset = new Vector3(cellSizeX / 2, cellSizeY / 2, cellSizeZ / 2);
 
             gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned = gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell[Random.Range(0, gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count)];
+            //setAdjacentRules(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellId, gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned);
 
-            //setAdjacentRules(currentCell.cellId, currentCell.dataAssigned);
 
             gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj = Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.identity, GameObject.Find("Enviroment Holder").transform);
+
+
         }
     }
 
     //This function will give all the adacent cells their requirment changes 
     //For example, a cell is collapsed into a sand block, and will tell all the adjacent cells that they can now only be either sand or water
 
-    void setAdjacentRules(Vector3 cellId, assetData assetDataForAssignedCell)
-    {
+    void setAdjacentRules(Vector3 cellId, assetData assetDataForAssignedCell) {
         //Set The Upper Adjacent Limits
-        if (cellId.y != gridHeight - 1)
-        {
+        if (cellId.y != gridHeight - 1) {
             //For each allowed cell in the above cell, it will run these commands
-            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Count; i++)
-            {
+            //print("Setting adjacent rules for everything above");
+            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Count - 1; i++) {
                 //This runs through all of the allowed assets for cell above, in each allowed asset in the prime cell
-                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsAbove.Length; y++)
-                {
+                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsAbove.Length - 1; y++) {
                     //This uses the Linq net framework to compare the allowed assets within the above adjacent cell, and if that array does not contain the allowed above asset of this spesific array within the prime array, it will remove it.
-                    if (!gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsAbove[y])) gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.RemoveAt(i);
+                    if (!gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsAbove[y])) {
+                        gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.RemoveAt(i);
+                    }
+
 
                 }
             }
         }
         //Set The Lower Adjacent Limits
-        if (cellId.y != 0)
-        {
+        if (cellId.y != 0) {
             //For each allowed cell in the above cell, it will run these commands
-            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Count; i++)
-            {
+            //print("Setting adjacent rules for everything below");
+
+            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y - 1, (int)cellId.z].allowedAsssetsInCell.Count - 1; i++) {
                 //This runs through all of the allowed assets for cell above, in each allowed asset in the prime cell
-                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsBelow.Length; y++)
-                {
+                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsBelow.Length - 1; y++) {
                     //This uses the Linq net framework to compare the allowed assets within the above adjacent cell, and if that array does not contain the allowed below asset of this spesific array within the prime array, it will remove it.
-                    if (!gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsBelow[y])) gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.RemoveAt(i);
+                    if (!gridArray[(int)cellId.x, (int)cellId.y - 1, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsBelow[y])) {
+                        gridArray[(int)cellId.x, (int)cellId.y - 1, (int)cellId.z].allowedAsssetsInCell.RemoveAt(i);
+                    }
 
                 }
             }
         }
         //Set The Right Adjacent Limits
-        if (cellId.y != gridWidth - 1)
-        {
+        if (cellId.x != gridWidth - 1) {
             //For each allowed cell in the above cell, it will run these commands
-            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Count; i++)
-            {
-                //This runs through all of the allowed assets for cell above, in each allowed asset in the prime cell
-                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsRight.Length; y++)
-                {
+            //print("Setting adjacent rules for everything to the right");
+
+            for (int i = 0; i < gridArray[(int)cellId.x + 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.Count - 1; i++) {
+                //This runs through all of the allowed assets for cell to the right, in each allowed asset in the prime cell
+                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsRight.Length - 1; y++) {
                     //This uses the Linq net framework to compare the allowed assets within the above adjacent cell, and if that array does not contain the allowed above asset of this spesific array within the prime array, it will remove it.
-                    if (!gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsRight[y])) gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.RemoveAt(i);
+                    if(cellId == Vector3.zero) print(assetDataForAssignedCell.allowedAssetsBackward[y].name);  
+                    if (!gridArray[(int)cellId.x + 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsRight[y])) {
+                    }
 
                 }
             }
         }
         //Set The Left Adjacent Limits
-        if (cellId.y != 0)
-        {
+        if (cellId.x != 0) {
             //For each allowed cell in the above cell, it will run these commands
-            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Count; i++)
-            {
+            //print("Setting adjacent rules for everything to the left");
+
+            for (int i = 0; i < gridArray[(int)cellId.x - 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.Count - 1; i++) {
                 //This runs through all of the allowed assets for cell above, in each allowed asset in the prime cell
-                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsLeft.Length; y++)
-                {
+                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsLeft.Length - 1; y++) {
                     //This uses the Linq net framework to compare the allowed assets within the above adjacent cell, and if that array does not contain the allowed above asset of this spesific array within the prime array, it will remove it.
-                    if (!gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsLeft[y])) gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.RemoveAt(i);
+                    if (!gridArray[(int)cellId.x - 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsLeft[y])) {
+                        gridArray[(int)cellId.x - 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.RemoveAt(i);
+                    }
 
                 }
             }
         }
         //Set The Forward Adjacent Limits
-        if (cellId.y != gridDepth - 1)
-        {
+        if (cellId.z != gridDepth - 1) {
             //For each allowed cell in the above cell, it will run these commands
-            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Count; i++)
-            {
+            //print("Setting adjacent rules for everything forward");
+
+            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].allowedAsssetsInCell.Count - 1; i++) {
                 //This runs through all of the allowed assets for cell above, in each allowed asset in the prime cell
-                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsForward.Length; y++)
-                {
+                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsForward.Length - 1; y++) {
                     //This uses the Linq net framework to compare the allowed assets within the above adjacent cell, and if that array does not contain the allowed above asset of this spesific array within the prime array, it will remove it.
-                    if (!gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsForward[y])) gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.RemoveAt(i);
+                    if (!gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsForward[y])) {
+                        gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].allowedAsssetsInCell.RemoveAt(i);
+                    }
 
                 }
             }
         }
         //Set The Backward Adjacent Limits
-        if (cellId.y != 0)
-        {
+        if (cellId.z != 0) {
             //For each allowed cell in the above cell, it will run these commands
-            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Count; i++)
-            {
+            //print("Setting adjacent rules for everything backward");
+
+            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].allowedAsssetsInCell.Count - 1; i++) {
                 //This runs through all of the allowed assets for cell above, in each allowed asset in the prime cell
-                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsBackward.Length; y++)
-                {
+                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsBackward.Length - 1; y++) {
                     //This uses the Linq net framework to compare the allowed assets within the above adjacent cell, and if that array does not contain the allowed above asset of this spesific array within the prime array, it will remove it.
-                    if (!gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsBackward[y])) gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.RemoveAt(i);
+                    
+                    if (!gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsBackward[y])) {
+                        gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].allowedAsssetsInCell.RemoveAt(i);
+                    }
 
                 }
             }
@@ -219,20 +209,15 @@ public class WFCGenerator : MonoBehaviour
 
 
 
-    private void OnDrawGizmos()
-    {
+    private void OnDrawGizmos() {
         //to stop errors from happening if the array is not initalized
         if (gridArray == null) return;
 
-        if (displayCellIDs)
-        {
+        if (displayCellIDs) {
             //itterates through each cell and places a lable explaining its Cell ID
-            for (int x = 0; x < gridArray.GetLength(0); x++)
-            {
-                for (int y = 0; y < gridArray.GetLength(1); y++)
-                {
-                    for (int z = 0; z < gridArray.GetLength(2); z++)
-                    {
+            for (int x = 0; x < gridArray.GetLength(0); x++) {
+                for (int y = 0; y < gridArray.GetLength(1); y++) {
+                    for (int z = 0; z < gridArray.GetLength(2); z++) {
 
                         Vector3 handleOffset = new Vector3(gridArray[x, y, z].cellPos.x + (cellSizeX / 2), gridArray[x, y, z].cellPos.y + (cellSizeY / 2), gridArray[x, y, z].cellPos.z + (cellSizeZ / 2));
                         Handles.Label(handleOffset, gridArray[x, y, z].cellId.ToString());
@@ -240,14 +225,11 @@ public class WFCGenerator : MonoBehaviour
                 }
             }
         }
-        if (displayCellLines)
-        {
+        if (displayCellLines) {
             //Generates the inside grid lines
             //Draws the Width Lines
-            for (int z = 0; z < gridArray.GetLength(2) + 1; z++)
-            {
-                for (int y = 0; y < gridArray.GetLength(1) + 1; y++)
-                {
+            for (int z = 0; z < gridArray.GetLength(2) + 1; z++) {
+                for (int y = 0; y < gridArray.GetLength(1) + 1; y++) {
                     //Create a border of colour within the grid
                     if (z == 0 || y == 0 || z == gridArray.GetLength(2) || y == gridArray.GetLength(1)) Gizmos.color = Color.black;
                     else Gizmos.color = Color.grey;
@@ -263,10 +245,8 @@ public class WFCGenerator : MonoBehaviour
             }
 
             //Draws the height lines
-            for (int x = 0; x < gridArray.GetLength(0) + 1; x++)
-            {
-                for (int z = 0; z < gridArray.GetLength(2) + 1; z++)
-                {
+            for (int x = 0; x < gridArray.GetLength(0) + 1; x++) {
+                for (int z = 0; z < gridArray.GetLength(2) + 1; z++) {
                     //Create a border of colour within the grid
                     if (x == 0 || z == 0 || x == gridArray.GetLength(0) || z == gridArray.GetLength(2)) Gizmos.color = Color.black;
                     else Gizmos.color = Color.grey;
@@ -282,10 +262,8 @@ public class WFCGenerator : MonoBehaviour
             }
 
             //Draws the depth lines
-            for (int x = 0; x < gridArray.GetLength(0) + 1; x++)
-            {
-                for (int y = 0; y < gridArray.GetLength(1) + 1; y++)
-                {
+            for (int x = 0; x < gridArray.GetLength(0) + 1; x++) {
+                for (int y = 0; y < gridArray.GetLength(1) + 1; y++) {
                     //Create a border of colour within the grid
                     if (x == 0 || y == 0 || x == gridArray.GetLength(0) || y == gridArray.GetLength(1)) Gizmos.color = Color.black;
                     else Gizmos.color = Color.grey;
@@ -303,8 +281,7 @@ public class WFCGenerator : MonoBehaviour
     }
 
     //gets the grid position of the cell in real world space
-    public Vector3 getGridPos(int xId, int yId, int zId)
-    {
+    public Vector3 getCellPosInWorldspace(int xId, int yId, int zId) {
         float tempPosX;
         float tempPosY;
         float tempPosZ;
@@ -317,17 +294,12 @@ public class WFCGenerator : MonoBehaviour
     }
 
     //Gets the adjacent cells around the given ID
-    public Vector3[] getAdjacentCells(Vector3 cellId)
-    {
-        return null;
-    }
 
 }
 
 [System.Serializable]
 //Cell struct with basic information required
-public struct gridCell
-{
+public struct gridCell {
     public Vector3Int cellId;
     public Vector3 cellPos;
     public Vector3 cellSize;
@@ -335,8 +307,7 @@ public struct gridCell
     public assetData dataAssigned;
     public GameObject cellObj;
 
-    public gridCell(Vector3Int Id, Vector3 Pos, Vector3 Size, assetDataList dataList)
-    {
+    public gridCell(Vector3Int Id, Vector3 Pos, Vector3 Size, assetDataList dataList) {
         cellId = Id;
         cellPos = Pos;
         cellSize = Size;
