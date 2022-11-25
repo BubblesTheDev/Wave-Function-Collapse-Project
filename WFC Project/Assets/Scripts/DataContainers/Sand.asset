@@ -18,7 +18,8 @@ MonoBehaviour:
   allowedAssetsAbove:
   - {fileID: 11400000, guid: 6f6d653d25073c9479e703a3bb39eebd, type: 2}
   - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
-  allowedAssetsBelow: []
+  allowedAssetsBelow:
+  - {fileID: 11400000}
   allowedAssetsRight:
   - {fileID: 11400000, guid: e0e41fbfd8596f74494fb6ce4ffc4a03, type: 2}
   - {fileID: 11400000}

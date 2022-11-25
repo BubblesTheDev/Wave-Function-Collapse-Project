@@ -15,7 +15,8 @@ MonoBehaviour:
   assetName: Air Block
   assetId: 0
   primaryAsset: {fileID: 3612098306302503803, guid: 75fb8e48af014964ba0a581e25d69534, type: 3}
-  allowedAssetsAbove: []
+  allowedAssetsAbove:
+  - {fileID: 11400000}
   allowedAssetsBelow:
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 6f6d653d25073c9479e703a3bb39eebd, type: 2}

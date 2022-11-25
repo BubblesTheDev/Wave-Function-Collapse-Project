@@ -5,6 +5,7 @@ using UnityEditor;
 using System;
 using Random = UnityEngine.Random;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class WFCGenerator : MonoBehaviour {
 
@@ -18,7 +19,8 @@ public class WFCGenerator : MonoBehaviour {
 
     //Level Generator Settings
     public assetDataList dataList;
-    //public List<gridCell> emptyCells = new List<gridCell>();
+    public Vector3Int startingCellId;
+    Vector3Int randomCellId;
 
     //Debug options settings
     public bool displayCellIDs = false;
@@ -40,7 +42,8 @@ public class WFCGenerator : MonoBehaviour {
                 print("The cell of 0,0,0 allows " + gridArray[0, 0, 0].allowedAsssetsInCell[i].assetName);
             }
         }
-        
+        if (Input.GetKeyUp(KeyCode.F1)) SceneManager.LoadScene(0);
+
     }
 
     //Overall script to generate grid 
@@ -85,129 +88,163 @@ public class WFCGenerator : MonoBehaviour {
 
     //This part of the code is now generating the map overall
     public void generateMap() {
-        for (int i = 0; i < gridWidth * gridHeight * gridDepth; i++) {
-            Vector3Int randomCellId = new Vector3Int(Random.Range(0, gridWidth), Random.Range(0, gridHeight), Random.Range(0, gridDepth));
-            while (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned != null) {
-                randomCellId = new Vector3Int(Random.Range(0, gridWidth), Random.Range(0, gridHeight), Random.Range(0, gridDepth));
-                if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned == null) break;
+        for (int emptySpacesLeft = gridWidth * gridHeight * gridDepth; emptySpacesLeft >= 0;) {
+            Vector3Int[] EmptyAdjacentCells;
+
+            if (emptySpacesLeft == gridWidth * gridHeight * gridDepth) randomCellId = startingCellId;
+            else if(emptySpacesLeft < gridWidth * gridHeight * gridDepth) {
+                EmptyAdjacentCells = getEmptyAdjacentCells(randomCellId).ToArray();
+
+                if(EmptyAdjacentCells.Length == 0) {
+
+                }
+
+                randomCellId = EmptyAdjacentCells[Random.Range(0, EmptyAdjacentCells.Length-1)];
             }
+
+            print(randomCellId);
             Vector3 worldPositionForCell = getCellPosInWorldspace(randomCellId.x, randomCellId.y, randomCellId.z);
             Vector3 posOffset = new Vector3(cellSizeX / 2, cellSizeY / 2, cellSizeZ / 2);
 
             gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned = gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell[Random.Range(0, gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count)];
-            //setAdjacentRules(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellId, gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned);
 
-
+            setAdjacentRules(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellId);
             gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj = Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.identity, GameObject.Find("Enviroment Holder").transform);
-
-
+            emptySpacesLeft--;
         }
     }
 
-    //This function will give all the adacent cells their requirment changes 
-    //For example, a cell is collapsed into a sand block, and will tell all the adjacent cells that they can now only be either sand or water
-
-    void setAdjacentRules(Vector3 cellId, assetData assetDataForAssignedCell) {
+    void setAdjacentRules(Vector3 cellId) {
         //Set The Upper Adjacent Limits
         if (cellId.y != gridHeight - 1) {
-            //For each allowed cell in the above cell, it will run these commands
-            //print("Setting adjacent rules for everything above");
-            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Count - 1; i++) {
-                //This runs through all of the allowed assets for cell above, in each allowed asset in the prime cell
-                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsAbove.Length - 1; y++) {
-                    //This uses the Linq net framework to compare the allowed assets within the above adjacent cell, and if that array does not contain the allowed above asset of this spesific array within the prime array, it will remove it.
-                    if (!gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsAbove[y])) {
-                        gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.RemoveAt(i);
+
+            //for each of the allowed assets above the prime number
+            for (int x = 0; x < gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z].dataAssigned.allowedAssetsAbove.Length - 1; x++) {
+
+                //Runs through each of the current allowed assets within the above adjacent cell
+                for (int y = 0; y < gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.Count - 1; y++) {
+
+                    //If the prime number's above rules do *NOT* contain the current allowed asset within the adjacent cell
+                    //remove that asset from the allowed cells
+                    if (!gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z].dataAssigned.allowedAssetsAbove.
+                        Contains(gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell[y])) {
+                        gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].allowedAsssetsInCell.RemoveAt(y);
                     }
-
-
                 }
             }
         }
+
         //Set The Lower Adjacent Limits
         if (cellId.y != 0) {
-            //For each allowed cell in the above cell, it will run these commands
-            //print("Setting adjacent rules for everything below");
+            //for each of the allowed assets below the prime number
+            for (int x = 0; x < gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z].dataAssigned.allowedAssetsBelow.Length - 1; x++) {
 
-            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y - 1, (int)cellId.z].allowedAsssetsInCell.Count - 1; i++) {
-                //This runs through all of the allowed assets for cell above, in each allowed asset in the prime cell
-                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsBelow.Length - 1; y++) {
-                    //This uses the Linq net framework to compare the allowed assets within the above adjacent cell, and if that array does not contain the allowed below asset of this spesific array within the prime array, it will remove it.
-                    if (!gridArray[(int)cellId.x, (int)cellId.y - 1, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsBelow[y])) {
-                        gridArray[(int)cellId.x, (int)cellId.y - 1, (int)cellId.z].allowedAsssetsInCell.RemoveAt(i);
+                //Runs through each of the current allowed assets within the below adjacent cell
+                for (int y = 0; y < gridArray[(int)cellId.x, (int)cellId.y - 1, (int)cellId.z].allowedAsssetsInCell.Count - 1; y++) {
+
+                    //If the prime number's below rules do *NOT* contain the current allowed asset within the adjacent cell
+                    //remove that asset from the allowed cells
+                    if (!gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z].dataAssigned.allowedAssetsBelow.
+                        Contains(gridArray[(int)cellId.x, (int)cellId.y - 1, (int)cellId.z].allowedAsssetsInCell[y])) {
+                        gridArray[(int)cellId.x, (int)cellId.y - 1, (int)cellId.z].allowedAsssetsInCell.RemoveAt(y);
                     }
-
                 }
             }
         }
+
         //Set The Right Adjacent Limits
         if (cellId.x != gridWidth - 1) {
-            //For each allowed cell in the above cell, it will run these commands
-            //print("Setting adjacent rules for everything to the right");
 
-            for (int i = 0; i < gridArray[(int)cellId.x + 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.Count - 1; i++) {
-                //This runs through all of the allowed assets for cell to the right, in each allowed asset in the prime cell
-                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsRight.Length - 1; y++) {
-                    //This uses the Linq net framework to compare the allowed assets within the above adjacent cell, and if that array does not contain the allowed above asset of this spesific array within the prime array, it will remove it.
-                    if(cellId == Vector3.zero) print(assetDataForAssignedCell.allowedAssetsBackward[y].name);  
-                    if (!gridArray[(int)cellId.x + 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsRight[y])) {
+            //for each of the allowed assets to the right of the prime number
+            for (int x = 0; x < gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z].dataAssigned.allowedAssetsRight.Length - 1; x++) {
+
+                //Runs through each of the current allowed assets within the right adjacent cell
+                for (int y = 0; y < gridArray[(int)cellId.x + 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.Count - 1; y++) {
+
+                    //If the prime number's right side rules do *NOT* contain the current allowed asset within the adjacent cell
+                    //remove that asset from the allowed cells
+                    if (!gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z].dataAssigned.allowedAssetsRight.
+                        Contains(gridArray[(int)cellId.x + 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell[y])) {
+                        gridArray[(int)cellId.x + 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.RemoveAt(y);
                     }
-
                 }
             }
         }
+
         //Set The Left Adjacent Limits
         if (cellId.x != 0) {
-            //For each allowed cell in the above cell, it will run these commands
-            //print("Setting adjacent rules for everything to the left");
+            //for each of the allowed assets to the left of the prime number
+            for (int x = 0; x < gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z].dataAssigned.allowedAssetsLeft.Length - 1; x++) {
 
-            for (int i = 0; i < gridArray[(int)cellId.x - 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.Count - 1; i++) {
-                //This runs through all of the allowed assets for cell above, in each allowed asset in the prime cell
-                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsLeft.Length - 1; y++) {
-                    //This uses the Linq net framework to compare the allowed assets within the above adjacent cell, and if that array does not contain the allowed above asset of this spesific array within the prime array, it will remove it.
-                    if (!gridArray[(int)cellId.x - 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsLeft[y])) {
-                        gridArray[(int)cellId.x - 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.RemoveAt(i);
+                //Runs through each of the current allowed assets within the left adjacent cell
+                for (int y = 0; y < gridArray[(int)cellId.x - 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.Count - 1; y++) {
+
+                    //If the prime number's left side rules do *NOT* contain the current allowed asset within the adjacent cell
+                    //remove that asset from the allowed cells
+                    if (!gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z].dataAssigned.allowedAssetsLeft.
+                        Contains(gridArray[(int)cellId.x - 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell[y])) {
+                        gridArray[(int)cellId.x - 1, (int)cellId.y, (int)cellId.z].allowedAsssetsInCell.RemoveAt(y);
                     }
-
                 }
             }
         }
+
         //Set The Forward Adjacent Limits
         if (cellId.z != gridDepth - 1) {
-            //For each allowed cell in the above cell, it will run these commands
-            //print("Setting adjacent rules for everything forward");
+            //for each of the allowed assets in front of the prime number
+            for (int x = 0; x < gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z].dataAssigned.allowedAssetsForward.Length - 1; x++) {
 
-            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].allowedAsssetsInCell.Count - 1; i++) {
-                //This runs through all of the allowed assets for cell above, in each allowed asset in the prime cell
-                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsForward.Length - 1; y++) {
-                    //This uses the Linq net framework to compare the allowed assets within the above adjacent cell, and if that array does not contain the allowed above asset of this spesific array within the prime array, it will remove it.
-                    if (!gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsForward[y])) {
-                        gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].allowedAsssetsInCell.RemoveAt(i);
+                //Runs through each of the current allowed assets within the front adjacent cell
+                for (int y = 0; y < gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].allowedAsssetsInCell.Count - 1; y++) {
+
+                    //If the prime number's front side rules do *NOT* contain the current allowed asset within the adjacent cell
+                    //remove that asset from the allowed cells
+                    if (!gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z].dataAssigned.allowedAssetsForward.
+                        Contains(gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].allowedAsssetsInCell[y])) {
+                        gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].allowedAsssetsInCell.RemoveAt(y);
                     }
-
                 }
             }
         }
+
         //Set The Backward Adjacent Limits
         if (cellId.z != 0) {
-            //For each allowed cell in the above cell, it will run these commands
-            //print("Setting adjacent rules for everything backward");
+            //for each of the allowed assets behind of the prime number
+            for (int x = 0; x < gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z].dataAssigned.allowedAssetsBackward.Length - 1; x++) {
 
-            for (int i = 0; i < gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].allowedAsssetsInCell.Count - 1; i++) {
-                //This runs through all of the allowed assets for cell above, in each allowed asset in the prime cell
-                for (int y = 0; y < assetDataForAssignedCell.allowedAssetsBackward.Length - 1; y++) {
-                    //This uses the Linq net framework to compare the allowed assets within the above adjacent cell, and if that array does not contain the allowed above asset of this spesific array within the prime array, it will remove it.
-                    
-                    if (!gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].allowedAsssetsInCell.Contains(assetDataForAssignedCell.allowedAssetsBackward[y])) {
-                        gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].allowedAsssetsInCell.RemoveAt(i);
+                //Runs through each of the current allowed assets within the behind adjacent cell
+                for (int y = 0; y < gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].allowedAsssetsInCell.Count - 1; y++) {
+
+                    //If the prime number's back side rules do *NOT* contain the current allowed asset within the adjacent cell
+                    //remove that asset from the allowed cells
+                    if (!gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z].dataAssigned.allowedAssetsBackward.
+                        Contains(gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].allowedAsssetsInCell[y])) {
+                        gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].allowedAsssetsInCell.RemoveAt(y);
                     }
-
                 }
             }
         }
     }
 
+    List<Vector3Int> getEmptyAdjacentCells(Vector3 cellId) {
+        List<Vector3Int> cellsToReturn = new List<Vector3Int>(0);
+        if (cellId.x != gridWidth - 1)
+            if (gridArray[(int)cellId.x + 1, (int)cellId.y, (int)cellId.z].dataAssigned == null) cellsToReturn.Add(gridArray[(int)cellId.x + 1, (int)cellId.y, (int)cellId.z].cellId);
+        if (cellId.x != 0)
+            if (gridArray[(int)cellId.x - 1, (int)cellId.y, (int)cellId.z].dataAssigned == null) cellsToReturn.Add(gridArray[(int)cellId.x - 1, (int)cellId.y, (int)cellId.z].cellId);
+        if (cellId.y != gridHeight - 1)
+            if (gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].dataAssigned == null) cellsToReturn.Add(gridArray[(int)cellId.x, (int)cellId.y + 1, (int)cellId.z].cellId);
+        if (cellId.y != 0)
+            if (gridArray[(int)cellId.x, (int)cellId.y - 1, (int)cellId.z].dataAssigned == null) cellsToReturn.Add(gridArray[(int)cellId.x, (int)cellId.y - 1, (int)cellId.z].cellId);
+        if (cellId.z != gridDepth - 1)
+            if (gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].dataAssigned == null) cellsToReturn.Add(gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].cellId);
+        if (cellId.z != 0)
+            if (gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].dataAssigned == null) cellsToReturn.Add(gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].cellId);
 
+        
+
+        return cellsToReturn;
+    }
 
     private void OnDrawGizmos() {
         //to stop errors from happening if the array is not initalized
@@ -311,7 +348,10 @@ public struct gridCell {
         cellId = Id;
         cellPos = Pos;
         cellSize = Size;
-        allowedAsssetsInCell = dataList.listOfAssets;
+        allowedAsssetsInCell = new List<assetData>();
+        for (int i = 0; i < dataList.listOfAssets.Count - 1; i++) {
+            allowedAsssetsInCell.Add(dataList.listOfAssets[i]);
+        }
         dataAssigned = null;
         cellObj = null;
     }

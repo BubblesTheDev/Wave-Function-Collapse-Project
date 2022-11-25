@@ -21,7 +21,7 @@ public class WFCGeneratorEditor : Editor {
         //Shows all simple options if advanced settings inst toggled
         if (!gen.advancedSettings) {
             GUILayout.BeginVertical();
-            
+
 
             //labels and fields for the width, height and depth of the grid
             GUILayout.Label("Simple Generator Settings", EditorStyles.boldLabel);
@@ -30,33 +30,55 @@ public class WFCGeneratorEditor : Editor {
 
 
             GUILayout.Space(10);
-            {
-                gen.gridWidth = EditorGUILayout.IntField("Grid Width", gen.gridWidth);
-                gen.gridHeight = EditorGUILayout.IntField("Grid Height", gen.gridHeight);
-                gen.gridDepth = EditorGUILayout.IntField("Grid Depth", gen.gridDepth);
-            }
+
+            gen.gridWidth = EditorGUILayout.IntField("Grid Width", gen.gridWidth);
+            gen.gridHeight = EditorGUILayout.IntField("Grid Height", gen.gridHeight);
+            gen.gridDepth = EditorGUILayout.IntField("Grid Depth", gen.gridDepth);
+
 
             GUILayout.Space(5f);
             //Creating labels for the cell sizes
-            {
-                GUILayout.BeginHorizontal();
 
-                GUILayout.Label("Cell Size X");
-                GUILayout.Label("Cell Size Y");
-                GUILayout.Label("Cell Size Z");
+            GUILayout.BeginHorizontal();
 
-                GUILayout.EndHorizontal();
-            }
+            GUILayout.Label("Cell Size X");
+            GUILayout.Label("Cell Size Y");
+            GUILayout.Label("Cell Size Z");
+
+            GUILayout.EndHorizontal();
+
             //Creating fields for the cell sizes
-            {
-                GUILayout.BeginHorizontal();
 
-                gen.cellSizeX = EditorGUILayout.FloatField(gen.cellSizeX);
-                gen.cellSizeY = EditorGUILayout.FloatField(gen.cellSizeY);
-                gen.cellSizeZ = EditorGUILayout.FloatField(gen.cellSizeZ);
+            GUILayout.BeginHorizontal();
 
-                GUILayout.EndHorizontal();
-            }
+            gen.cellSizeX = EditorGUILayout.FloatField(gen.cellSizeX);
+            gen.cellSizeY = EditorGUILayout.FloatField(gen.cellSizeY);
+            gen.cellSizeZ = EditorGUILayout.FloatField(gen.cellSizeZ);
+
+            GUILayout.EndHorizontal();
+
+
+            GUILayout.Space(5f);
+            //Creating labels for the Starting Cell
+
+            GUILayout.BeginHorizontal();
+
+            GUILayout.Label("Starting Cell X Id");
+            GUILayout.Label("Starting Cell Y Id");
+            GUILayout.Label("Starting Cell Z Id");
+
+            GUILayout.EndHorizontal();
+
+            //Creating fields for the cell sizes
+
+            GUILayout.BeginHorizontal();
+
+            gen.startingCellId.x = EditorGUILayout.IntField(gen.startingCellId.x);
+            gen.startingCellId.y = EditorGUILayout.IntField(gen.startingCellId.y);
+            gen.startingCellId.z = EditorGUILayout.IntField(gen.startingCellId.z);
+
+            GUILayout.EndHorizontal();
+
 
 
             GUILayout.EndVertical();
@@ -79,7 +101,7 @@ public class WFCGeneratorEditor : Editor {
             }
             GUILayout.EndVertical();
 
-            
+
             advancedGridFoldOut = EditorGUILayout.Foldout(advancedGridFoldOut, "Advanced Grid Allowed Choices");
             if (advancedGridFoldOut) {
                 GUILayout.Label("hahah");
