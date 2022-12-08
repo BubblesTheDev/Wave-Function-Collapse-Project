@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f72be2d1e03026f42a44a5db015e384a, type: 3}
+  m_Name: Road Turn 45 (Left) (Forward)
+  m_EditorClassIdentifier: 
+  minVerticalLevel: 0
+  maxVerticalLevel: 5
+  facingDir: 1
+  percentageAllowed: 1
+  primaryAsset: {fileID: 1367496826253315153, guid: 399be79656ba5324cac8d3895f99e8e3, type: 3}
+  allowedAssetsAbove:
+  - {fileID: 11400000, guid: ccac0d5a4fc078145b2a0b6804c61817, type: 2}
+  allowedAssetsBelow: []
+  allowedAssetsRight:
+  - {fileID: 11400000, guid: 74e151ca7fd3e0b4c95b8ea04818338a, type: 2}
+  - {fileID: 11400000, guid: 742402098807d864ab1238e4934fbb4a, type: 2}
+  - {fileID: 11400000, guid: 855f6e05769816e4aa017b4c48a75302, type: 2}
+  - {fileID: 11400000, guid: 964e244bf5d0a844284dd80dc1b34ad0, type: 2}
+  - {fileID: 11400000, guid: b33a866f1f4f5ae489165e4a940f788b, type: 2}
+  - {fileID: 11400000, guid: 2604509bc607a1148afd8b731cc97801, type: 2}
+  - {fileID: 11400000, guid: 362e0d48ab0066b4f893b5e2ff851828, type: 2}
+  - {fileID: 11400000, guid: 3ce0c43b0b426b74283159e0b6fab452, type: 2}
+  allowedAssetsLeft:
+  - {fileID: 11400000, guid: ece5c9b23c84ef148ab6d06ee68c5d27, type: 2}
+  - {fileID: 11400000, guid: 855f6e05769816e4aa017b4c48a75302, type: 2}
+  - {fileID: 11400000, guid: 80cd51552ec8a904ca1075eccb5525da, type: 2}
+  - {fileID: 11400000, guid: 05295074700eb3144bf172c4116bfcd7, type: 2}
+  - {fileID: 11400000, guid: 80fb26bc64c33d044b0d6a5234f2df79, type: 2}
+  - {fileID: 11400000, guid: b33a866f1f4f5ae489165e4a940f788b, type: 2}
+  - {fileID: 11400000, guid: 2604509bc607a1148afd8b731cc97801, type: 2}
+  - {fileID: 11400000, guid: 362e0d48ab0066b4f893b5e2ff851828, type: 2}
+  - {fileID: 11400000, guid: ccac0d5a4fc078145b2a0b6804c61817, type: 2}
+  allowedAssetsForward:
+  - {fileID: 11400000, guid: ece5c9b23c84ef148ab6d06ee68c5d27, type: 2}
+  - {fileID: 11400000, guid: 742402098807d864ab1238e4934fbb4a, type: 2}
+  - {fileID: 11400000, guid: 964e244bf5d0a844284dd80dc1b34ad0, type: 2}
+  - {fileID: 11400000, guid: 80fb26bc64c33d044b0d6a5234f2df79, type: 2}
+  - {fileID: 11400000, guid: b33a866f1f4f5ae489165e4a940f788b, type: 2}
+  - {fileID: 11400000, guid: 36381500571b1844fb49cc49e8066dda, type: 2}
+  - {fileID: 11400000, guid: 362e0d48ab0066b4f893b5e2ff851828, type: 2}
+  - {fileID: 11400000, guid: 0d4cdf45066f0614ab6d546ac6c66d30, type: 2}
+  - {fileID: 11400000, guid: ccac0d5a4fc078145b2a0b6804c61817, type: 2}
+  allowedAssetsBackward:
+  - {fileID: 11400000, guid: 742402098807d864ab1238e4934fbb4a, type: 2}
+  - {fileID: 11400000, guid: 855f6e05769816e4aa017b4c48a75302, type: 2}
+  - {fileID: 11400000, guid: de24dfe971911ef4e96c4771092df283, type: 2}
+  - {fileID: 11400000, guid: 80cd51552ec8a904ca1075eccb5525da, type: 2}
+  - {fileID: 11400000, guid: 80fb26bc64c33d044b0d6a5234f2df79, type: 2}
+  - {fileID: 11400000, guid: 362e0d48ab0066b4f893b5e2ff851828, type: 2}
+  - {fileID: 11400000, guid: 0d4cdf45066f0614ab6d546ac6c66d30, type: 2}
+  - {fileID: 11400000, guid: 3ce0c43b0b426b74283159e0b6fab452, type: 2}

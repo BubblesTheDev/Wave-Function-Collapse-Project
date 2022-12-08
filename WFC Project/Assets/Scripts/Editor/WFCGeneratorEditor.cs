@@ -16,6 +16,7 @@ public class WFCGeneratorEditor : Editor {
         gen.advancedSettings = EditorGUILayout.ToggleLeft("  Toggle Advanced Settings", gen.advancedSettings);
         gen.displayCellIDs = EditorGUILayout.ToggleLeft("   Toggle Cell Ids", gen.displayCellIDs);
         gen.displayCellLines = EditorGUILayout.ToggleLeft("   Toggle Cell Lines", gen.displayCellLines);
+        
         GUILayout.Space(10);
 
         //Shows all simple options if advanced settings inst toggled
@@ -27,7 +28,8 @@ public class WFCGeneratorEditor : Editor {
             GUILayout.Label("Simple Generator Settings", EditorStyles.boldLabel);
             gen.cellStartingPos = (GameObject)EditorGUILayout.ObjectField("Grid Starting Position", gen.cellStartingPos, typeof(GameObject), true);
             gen.dataList = (assetDataList)EditorGUILayout.ObjectField("Given Data List", gen.dataList, typeof(assetDataList), true);
-
+            gen.voidAsset = (assetData)EditorGUILayout.ObjectField("Asset Data To Void", gen.voidAsset, typeof(assetData), true);
+            gen.timeBetweenSpawning = EditorGUILayout.FloatField("   Time Between Spawning", gen.timeBetweenSpawning);
 
             GUILayout.Space(10);
 
@@ -79,8 +81,7 @@ public class WFCGeneratorEditor : Editor {
 
             GUILayout.EndHorizontal();
 
-
-
+            
             GUILayout.EndVertical();
         }
 
@@ -90,6 +91,7 @@ public class WFCGeneratorEditor : Editor {
             GUILayout.Label("Advanced Generator Settings", EditorStyles.boldLabel);
             gen.cellStartingPos = (GameObject)EditorGUILayout.ObjectField("Grid Starting Position", gen.cellStartingPos, typeof(GameObject), true);
             gen.centerGridOnGeneration = EditorGUILayout.ToggleLeft("   Center grid at the spawn position", gen.centerGridOnGeneration);
+            gen.timeBetweenSpawning = EditorGUILayout.FloatField("   Time Between Spawning", gen.timeBetweenSpawning);
             GUILayout.Space(10);
 
 
@@ -108,7 +110,15 @@ public class WFCGeneratorEditor : Editor {
             }
         }
 
+        
+            GUILayout.Space(10f);
         if (GUILayout.Button("Regenerate Grid")) gen.regenerateGrid();
-        if (GUILayout.Button("Regenerate Enviroment")) gen.generateMap();
+        if (GUILayout.Button("Regenerate Enviroment")) gen.StartCoroutine(gen.generateMap());
+            GUILayout.Space(10f);
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("currentEnviromentPercentages"));
+        serializedObject.ApplyModifiedProperties();
+
+
     }
 }

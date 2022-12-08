@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f72be2d1e03026f42a44a5db015e384a, type: 3}
+  m_Name: Sand
+  m_EditorClassIdentifier: 
+  assetName: Sand
+  assetId: 2
+  minVerticalLevel: 0
+  maxVerticalLevel: 3
+  percentageAllowed: 0.4
+  primaryAsset: {fileID: 3364434571873115030, guid: 9397eff75fb281549be8d7f6c01b7f16, type: 3}
+  allowedAssetsAbove:
+  - {fileID: 11400000, guid: 6f6d653d25073c9479e703a3bb39eebd, type: 2}
+  - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
+  - {fileID: 11400000}
+  allowedAssetsBelow:
+  - {fileID: 11400000}
+  allowedAssetsRight:
+  - {fileID: 11400000, guid: e0e41fbfd8596f74494fb6ce4ffc4a03, type: 2}
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 33388bc0758cb7b43b7ef4f47c5fa025, type: 2}
+  - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
+  allowedAssetsLeft:
+  - {fileID: 11400000, guid: e0e41fbfd8596f74494fb6ce4ffc4a03, type: 2}
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 33388bc0758cb7b43b7ef4f47c5fa025, type: 2}
+  - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
+  allowedAssetsForward:
+  - {fileID: 11400000, guid: e0e41fbfd8596f74494fb6ce4ffc4a03, type: 2}
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 33388bc0758cb7b43b7ef4f47c5fa025, type: 2}
+  - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
+  allowedAssetsBackward:
+  - {fileID: 11400000, guid: e0e41fbfd8596f74494fb6ce4ffc4a03, type: 2}
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 33388bc0758cb7b43b7ef4f47c5fa025, type: 2}
+  - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}

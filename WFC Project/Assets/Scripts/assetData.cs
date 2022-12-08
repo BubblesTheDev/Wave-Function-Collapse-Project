@@ -7,14 +7,25 @@ using UnityEngine;
 
 public class assetData : ScriptableObject
 {
-    public string assetName;
-    public int assetId;
+    public int minVerticalLevel = 0;
+    public int maxVerticalLevel = 5;
+    public possibleFacingDirections facingDir;
+    [Range(.01f,1),]
+    public float percentageAllowed = 1;
     public GameObject primaryAsset;
-    public assetData[] allowedAssetsAbove;
-    public assetData[] allowedAssetsBelow;
-    public assetData[] allowedAssetsRight;
-    public assetData[] allowedAssetsLeft;
-    public assetData[] allowedAssetsForward;
-    public assetData[] allowedAssetsBackward;
+    public List<assetData> allowedAssetsAbove;
+    public List<assetData> allowedAssetsBelow;
+    public List<assetData> allowedAssetsRight;
+    public List<assetData> allowedAssetsLeft;
+    public List<assetData> allowedAssetsForward;
+    public List<assetData> allowedAssetsBackward;
+}
+
+public enum possibleFacingDirections
+{
+    Forward,
+    Right,
+    Left,
+    Backward
 }
 
