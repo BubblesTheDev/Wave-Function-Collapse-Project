@@ -29,7 +29,8 @@ public class WFCGeneratorEditor : Editor {
             gen.cellStartingPos = (GameObject)EditorGUILayout.ObjectField("Grid Starting Position", gen.cellStartingPos, typeof(GameObject), true);
             gen.dataList = (assetDataList)EditorGUILayout.ObjectField("Given Data List", gen.dataList, typeof(assetDataList), true);
             gen.voidAsset = (assetData)EditorGUILayout.ObjectField("Asset Data To Void", gen.voidAsset, typeof(assetData), true);
-            gen.timeBetweenSpawning = EditorGUILayout.FloatField("   Time Between Spawning", gen.timeBetweenSpawning);
+            gen.timeBetweenSpawning = EditorGUILayout.FloatField("Time Between Spawning", gen.timeBetweenSpawning);
+            gen.maxNumberOffset = EditorGUILayout.IntField("Max Number Offset Modulo", gen.maxNumberOffset);
 
             GUILayout.Space(10);
 
@@ -91,7 +92,8 @@ public class WFCGeneratorEditor : Editor {
             GUILayout.Label("Advanced Generator Settings", EditorStyles.boldLabel);
             gen.cellStartingPos = (GameObject)EditorGUILayout.ObjectField("Grid Starting Position", gen.cellStartingPos, typeof(GameObject), true);
             gen.centerGridOnGeneration = EditorGUILayout.ToggleLeft("   Center grid at the spawn position", gen.centerGridOnGeneration);
-            gen.timeBetweenSpawning = EditorGUILayout.FloatField("   Time Between Spawning", gen.timeBetweenSpawning);
+            gen.timeBetweenSpawning = EditorGUILayout.FloatField("Time Between Spawning", gen.timeBetweenSpawning);
+            gen.maxNumberOffset = EditorGUILayout.IntField("Max Number Offset Modulo", gen.maxNumberOffset);
             GUILayout.Space(10);
 
 
@@ -113,10 +115,17 @@ public class WFCGeneratorEditor : Editor {
         
             GUILayout.Space(10f);
         if (GUILayout.Button("Regenerate Grid")) gen.regenerateGrid();
-        if (GUILayout.Button("Regenerate Enviroment")) gen.StartCoroutine(gen.generateMap());
+        if (gen.timeBetweenSpawning > 0)
+        {
+            if (GUILayout.Button("Regenerate Enviroment")) gen.StartCoroutine(gen.generateMap());
+        }
+        else
+        {
+            if (GUILayout.Button("Regenerate Enviroment")) gen.generateMapVoid();
+        }
             GUILayout.Space(10f);
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("currentEnviromentPercentages"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("allowedAssetNumbers"));
         serializedObject.ApplyModifiedProperties();
 
 

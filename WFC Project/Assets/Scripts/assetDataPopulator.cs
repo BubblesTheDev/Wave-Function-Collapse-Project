@@ -8,12 +8,13 @@ public class assetDataPopulator : MonoBehaviour
 {
     public assetDataList list;
     public int currentAssetListIndex = 0;
-    public bool finishedPopulatingCurrentAsset = true;
+    public bool clearBefore = false;
 
     private void Update()
     {
-        if(Input.GetKeyUp(KeyCode.F3) && finishedPopulatingCurrentAsset)
+        if (Input.GetKeyUp(KeyCode.F3))
         {
+            if(clearBefore)
             foreach (assetData item in list.listOfAssets)
             {
                 item.allowedAssetsAbove.Clear();
@@ -29,10 +30,8 @@ public class assetDataPopulator : MonoBehaviour
             }
         }
     }
-
     void populateAsset(assetData dataToGive)
     {
-        finishedPopulatingCurrentAsset = false;
 
         //Sets all the assets to have propper names
         {
@@ -70,87 +69,125 @@ public class assetDataPopulator : MonoBehaviour
 
         }
 
-        //Runs through all assets within the asset list
-        foreach (assetData dataInList in list.listOfAssets)
-        {
-            //Populates the dataToGive dataAsset with all allowed assets
-            {
-                if (!dataToGive.name.Contains("1") && !dataInList.name.Contains("2") && !dataToGive.allowedAssetsAbove.Contains(dataInList))
-                {
-                    //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
-                    dataToGive.allowedAssetsAbove.Add(dataInList);
-                }
-                if (!dataToGive.name.Contains("2") && !dataInList.name.Contains("1") && !dataToGive.allowedAssetsBelow.Contains(dataInList))
-                {
-                    //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
-                    dataToGive.allowedAssetsBelow.Add(dataInList);
-                }
-                if (!dataToGive.name.Contains("3") && !dataInList.name.Contains("4") && !dataToGive.allowedAssetsRight.Contains(dataInList))
-                {
-                    //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
-                    dataToGive.allowedAssetsRight.Add(dataInList);
-                }
-                if (!dataToGive.name.Contains("4") && !dataInList.name.Contains("3") && !dataToGive.allowedAssetsLeft.Contains(dataInList))
-                {
-                    //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
-                    dataToGive.allowedAssetsLeft.Add(dataInList);
-                }
-                if (!dataToGive.name.Contains("5") && !dataInList.name.Contains("6") && !dataToGive.allowedAssetsForward.Contains(dataInList))
-                {
-                    //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
-                    dataToGive.allowedAssetsForward.Add(dataInList);
-                }
-                if (!dataToGive.name.Contains("6") && !dataInList.name.Contains("5") && !dataToGive.allowedAssetsBackward.Contains(dataInList))
-                {
-                    //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
-                    dataToGive.allowedAssetsBackward.Add(dataInList);
-                }
-            }
-        }
+
+
+
 
         //Runs through all assets within the asset list
         foreach (assetData dataInList in list.listOfAssets)
         {
+            //Populates the dataToGive dataAsset with all the inverse assets
+            {
+                if (dataToGive.fillAboveSlot)
+                    if (!dataToGive.name.Contains("1") && !dataInList.name.Contains("2") && !dataToGive.allowedAssetsAbove.Contains(dataInList))
+                    {
+                        //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
+                        dataToGive.allowedAssetsAbove.Add(dataInList);
+                    }
+                if (dataToGive.fillBelowSlot)
+                    if (!dataToGive.name.Contains("2") && !dataInList.name.Contains("1") && !dataToGive.allowedAssetsBelow.Contains(dataInList))
+                    {
+                        //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
+                        dataToGive.allowedAssetsBelow.Add(dataInList);
+                    }
+                if (dataToGive.fillRightSlot)
+                    if (!dataToGive.name.Contains("3") && !dataInList.name.Contains("4") && !dataToGive.allowedAssetsRight.Contains(dataInList))
+                    {
+                        //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
+                        dataToGive.allowedAssetsRight.Add(dataInList);
+                    }
+                if (dataToGive.fillLeftSlot)
+                    if (!dataToGive.name.Contains("4") && !dataInList.name.Contains("3") && !dataToGive.allowedAssetsLeft.Contains(dataInList))
+                    {
+                        //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
+                        dataToGive.allowedAssetsLeft.Add(dataInList);
+                    }
+                if (dataToGive.fillForwardSlot)
+                    if (!dataToGive.name.Contains("5") && !dataInList.name.Contains("6") && !dataToGive.allowedAssetsForward.Contains(dataInList))
+                    {
+                        //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
+                        dataToGive.allowedAssetsForward.Add(dataInList);
+                    }
+                if (dataToGive.fillBackwardSlot)
+                    if (!dataToGive.name.Contains("6") && !dataInList.name.Contains("5") && !dataToGive.allowedAssetsBackward.Contains(dataInList))
+                    {
+                        //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
+                        dataToGive.allowedAssetsBackward.Add(dataInList);
+                    }
+            }
+
             //Populates the dataToGive dataAsset with all allowed assets
             {
-                if (dataToGive.name.Contains("1") && dataInList.name.Contains("2") && !dataToGive.allowedAssetsAbove.Contains(dataInList))
+                if (dataToGive.fillAboveSlot)
+                    if (dataToGive.name.Contains("1") && dataInList.name.Contains("2") && !dataToGive.allowedAssetsAbove.Contains(dataInList))
+                    {
+                        //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
+                        dataToGive.allowedAssetsAbove.Add(dataInList);
+                    }
+                if (dataToGive.fillBelowSlot)
+                    if (dataToGive.name.Contains("2") && dataInList.name.Contains("1") && !dataToGive.allowedAssetsBelow.Contains(dataInList))
+                    {
+                        //print("Adding The Asset of " + dataInList.name + " To the allowed assets above of " + dataToGive.name);
+                        dataToGive.allowedAssetsBelow.Add(dataInList);
+                    }
+                if (dataToGive.fillRightSlot)
+                    if (dataToGive.name.Contains("3") && dataInList.name.Contains("4") && !dataToGive.allowedAssetsRight.Contains(dataInList))
+                    {
+                        //print("Adding The Asset of " + dataInList.name + " To the allowed assets left of " + dataToGive.name);
+                        dataToGive.allowedAssetsRight.Add(dataInList);
+                    }
+                if (dataToGive.fillLeftSlot)
+                    if (dataToGive.name.Contains("4") && dataInList.name.Contains("3") && !dataToGive.allowedAssetsLeft.Contains(dataInList))
+                    {
+                        //print("Adding The Asset of " + dataInList.name + " To the allowed assets right of " + dataToGive.name);
+                        dataToGive.allowedAssetsLeft.Add(dataInList);
+                    }
+                if (dataToGive.fillForwardSlot)
+                    if (dataToGive.name.Contains("5") && dataInList.name.Contains("6") && !dataToGive.allowedAssetsForward.Contains(dataInList))
+                    {
+                        //print("Adding The Asset of " + dataInList.name + " To the allowed assets backward of " + dataToGive.name);
+                        dataToGive.allowedAssetsForward.Add(dataInList);
+                    }
+                if (dataToGive.fillBackwardSlot)
+                    if (dataToGive.name.Contains("6") && dataInList.name.Contains("5") && !dataToGive.allowedAssetsBackward.Contains(dataInList))
+                    {
+                        //print("Adding The Asset of " + dataInList.name + " To the allowed assets forward of " + dataToGive.name);
+                        dataToGive.allowedAssetsBackward.Add(dataInList);
+                    }
+            }
+
+            //Populates the dataToGive dataAssets empty slots with the void asset if needed
+            {
+                if (dataToGive.fillEmptyWithVoid && dataToGive.allowedAssetsAbove.Count == 0)
                 {
-                    //print("Adding The Asset of " + dataInList.name + " To the allowed assets below of " + dataToGive.name);
-                    dataToGive.allowedAssetsAbove.Add(dataInList);
+                    dataToGive.allowedAssetsAbove.Add(list.listOfAssets[0]);
                 }
-                if (dataToGive.name.Contains("2") && dataInList.name.Contains("1") && !dataToGive.allowedAssetsBelow.Contains(dataInList))
+                if (dataToGive.fillEmptyWithVoid && dataToGive.allowedAssetsBelow.Count == 0)
                 {
-                    //print("Adding The Asset of " + dataInList.name + " To the allowed assets above of " + dataToGive.name);
-                    dataToGive.allowedAssetsBelow.Add(dataInList);
+                    dataToGive.allowedAssetsBelow.Add(list.listOfAssets[0]);
                 }
-                if (dataToGive.name.Contains("3") && dataInList.name.Contains("4") && !dataToGive.allowedAssetsRight.Contains(dataInList))
+                if (dataToGive.fillEmptyWithVoid && dataToGive.allowedAssetsRight.Count == 0)
                 {
-                    //print("Adding The Asset of " + dataInList.name + " To the allowed assets left of " + dataToGive.name);
-                    dataToGive.allowedAssetsRight.Add(dataInList);
+                    dataToGive.allowedAssetsRight.Add(list.listOfAssets[0]);
                 }
-                if (dataToGive.name.Contains("4") && dataInList.name.Contains("3") && !dataToGive.allowedAssetsLeft.Contains(dataInList))
+                if (dataToGive.fillEmptyWithVoid && dataToGive.allowedAssetsLeft.Count == 0)
                 {
-                    //print("Adding The Asset of " + dataInList.name + " To the allowed assets right of " + dataToGive.name);
-                    dataToGive.allowedAssetsLeft.Add(dataInList);
+                    dataToGive.allowedAssetsLeft.Add(list.listOfAssets[0]);
                 }
-                if (dataToGive.name.Contains("5") && dataInList.name.Contains("6") && !dataToGive.allowedAssetsForward.Contains(dataInList))
+                if (dataToGive.fillEmptyWithVoid && dataToGive.allowedAssetsForward.Count == 0)
                 {
-                    //print("Adding The Asset of " + dataInList.name + " To the allowed assets backward of " + dataToGive.name);
-                    dataToGive.allowedAssetsForward.Add(dataInList);
+                    dataToGive.allowedAssetsForward.Add(list.listOfAssets[0]);
                 }
-                if (dataToGive.name.Contains("6") && dataInList.name.Contains("5") && !dataToGive.allowedAssetsBackward.Contains(dataInList))
+                if (dataToGive.fillEmptyWithVoid && dataToGive.allowedAssetsBackward.Count == 0)
                 {
-                    //print("Adding The Asset of " + dataInList.name + " To the allowed assets forward of " + dataToGive.name);
-                    dataToGive.allowedAssetsBackward.Add(dataInList);
+                    dataToGive.allowedAssetsBackward.Add(list.listOfAssets[0]);
                 }
             }
         }
 
 
-        print("Finished Populating the asset of " + dataToGive.name);
-        finishedPopulatingCurrentAsset = true;
+        print("Finished Populating assets");
     }
-
-
+    
 
 }

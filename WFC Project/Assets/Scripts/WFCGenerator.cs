@@ -23,10 +23,14 @@ public class WFCGenerator : MonoBehaviour
     public assetData voidAsset;
     public Vector3Int startingCellId;
     Vector3Int randomCellId;
-    public assetPercentage[] currentEnviromentPercentages;
+    public assetLimit[] allowedAssetNumbers;
     List<Vector3Int> adjacentEmptyCells;
     List<assetData> fullAssets;
-     assetData chosenData;
+    assetData chosenData;
+    public assetDataList edgeFillList;
+    public int maxNumberOffset = 10;
+    public int emptySpacesLeftOnLevel;
+
     //Debug options settings
     public bool displayCellIDs = false;
     public bool displayCellLines = false;
@@ -39,29 +43,32 @@ public class WFCGenerator : MonoBehaviour
 
     private void Awake()
     {
-        regenerateGrid();
-        currentEnviromentPercentages = new assetPercentage[dataList.listOfAssets.Count];
-        for (int i = 0; i < currentEnviromentPercentages.Length; i++)
+        allowedAssetNumbers = new assetLimit[dataList.listOfAssets.Count];
+        for (int i = 0; i < allowedAssetNumbers.Length; i++)
         {
-            currentEnviromentPercentages[i] = new assetPercentage(dataList.listOfAssets[i]);
+            allowedAssetNumbers[i] = new assetLimit(dataList.listOfAssets[i], (gridWidth * gridHeight * gridDepth), maxNumberOffset);
         }
         fullAssets = new List<assetData>();
+        regenerateGrid();
+
     }
 
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.Space)) SceneManager.LoadScene(0);
-        if (Input.GetKeyUp(KeyCode.F1)) StartCoroutine(generateMap());
-        if(Input.GetKeyUp(KeyCode.LeftAlt))
+        if (Input.GetKeyUp(KeyCode.F1))
         {
-            foreach (assetData item in gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell)
+            if (timeBetweenSpawning == 0) generateMapVoid();
+            else StartCoroutine(generateMap());
+        }
+        if (Input.GetKeyUp(KeyCode.F2)) Camera.main.transform.position = getCellPosInWorldspace(randomCellId.x, randomCellId.y, randomCellId.z);
+        if (Input.GetKeyUp(KeyCode.LeftAlt))
+        {
+            foreach (var item in gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell)
             {
-                print(item);
+                print(item.name);
             }
         }
-
-        if(currentEnviromentPercentages.Length != 0) updatePercentageCount();
-
     }
 
     //Overall script to generate grid 
@@ -81,9 +88,20 @@ public class WFCGenerator : MonoBehaviour
                     //temp variables to do basic calculation
                     Vector3Int tempId = new Vector3Int(x, y, z);
                     Vector3 tempSize = new Vector3(cellSizeX, cellSizeY, cellSizeZ);
+                    assetDataList tempDataList = new assetDataList();
+
+                    for (int i = 0; i < dataList.listOfAssets.Count; i++)
+                    {
+                        if (dataList.listOfAssets[i].minVerticalLevel <= y && dataList.listOfAssets[i].maxVerticalLevel >= y)
+                        {
+                            tempDataList.listOfAssets.Add(dataList.listOfAssets[i]);
+                        }
+                    }
+
+                    print(tempDataList.listOfAssets.Count);
 
                     //initializing the cell at a spesific grid ID
-                    gridArray[x, y, z] = new gridCell(tempId, getCellPosInWorldspace(x, y, z), tempSize, dataList);
+                    gridArray[x, y, z] = new gridCell(tempId, getCellPosInWorldspace(x, y, z), tempSize, tempDataList);
                 }
             }
         }
@@ -92,14 +110,6 @@ public class WFCGenerator : MonoBehaviour
     //This part of the code is now generating the map overall
     public IEnumerator generateMap()
     {
-        if(gridArray[0,0,0].cellObj != null)
-        {
-            Debug.LogWarning("You have already generated the enviroment, press the space key to restart the scene");
-            yield return null;
-        }
-
-
-
         for (int x = 0; x < gridHeight; x++)
         {
             List<Vector3Int> emptySpaceIds = new List<Vector3Int>();
@@ -107,11 +117,11 @@ public class WFCGenerator : MonoBehaviour
             {
                 for (int b = 0; b < gridDepth; b++)
                 {
-                    if(gridArray[a, x, b].dataAssigned == null) emptySpaceIds.Add(gridArray[a, x, b].cellId);
+                    if (gridArray[a, x, b].dataAssigned == null) emptySpaceIds.Add(gridArray[a, x, b].cellId);
                 }
             }
 
-            for (int emptySpacesLeftOnLevel = gridWidth * gridDepth; emptySpacesLeftOnLevel >= 1;)
+            for (emptySpacesLeftOnLevel = gridWidth * gridDepth; emptySpacesLeftOnLevel > 0; emptySpacesLeftOnLevel--)
             {
 
                 if (emptySpaceIds.Count == 0) break;
@@ -129,85 +139,153 @@ public class WFCGenerator : MonoBehaviour
                 }
 
 
-                adjacentEmptyCells = getAdjacentCells(randomCellId,true);
+
+
+                adjacentEmptyCells = getAdjacentCells(randomCellId, true);
                 Vector3 worldPositionForCell = getCellPosInWorldspace(randomCellId.x, randomCellId.y, randomCellId.z);
                 Vector3 posOffset = new Vector3(cellSizeX / 2, cellSizeY / 2, cellSizeZ / 2);
+
+
 
                 if (fullAssets.Count > 0)
                     gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell = gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Except(fullAssets).ToList();
 
-                //print("The allowed cells count of cell id " + randomCellId + " is: " + gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count);
-
-
-                
-                if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count >= 1
-                    || gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count == 1 
-                    && gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell[0] == voidAsset)
+                if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count > 0)
                 {
-                    chosenData = gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell[(int)Random.Range(0, gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count)];
-
-                }
-                //else if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count == 1 && gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell[0] != voidAsset) chosenData = gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell[0];
-                else chosenData = bruteForceData(randomCellId);
-                while (chosenData.minVerticalLevel > x || chosenData.maxVerticalLevel < x )
-                {
-                    if(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count <= 0 
-                        || gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count == 1 
-                        && gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell[0] == voidAsset) chosenData = bruteForceData(randomCellId);
-                    else chosenData = gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell[(int)Random.Range(0, gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count)];
-                    if (chosenData.minVerticalLevel <= x && chosenData.maxVerticalLevel >= x)
-                    {
-                        break;
-                    }
-                    yield return null;
-                }
+                    chosenData = gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell[Random.Range(0, gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count)];
+                } 
+                else if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count <= 0) chosenData = bruteForceData(randomCellId);
 
                 gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned = chosenData;
                 setAdjacentRules(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellId);
 
-
-                if (currentEnviromentPercentages[returnProperAssetPercentage(chosenData)].numOfAssetCollapsed == 0)
+                if (allowedAssetNumbers[returnProperAssetPercentage(chosenData)].numOfAssetCollapsed == 0 && !GameObject.Find(chosenData.name.Split(" ").FirstOrDefault() + " Holder"))
                 {
-                    GameObject tempObj = new GameObject(chosenData.name + " Holder");
+                    GameObject tempObj = new GameObject(chosenData.name.Split(" ").FirstOrDefault() + " Holder");
                     tempObj.transform.parent = GameObject.Find("Enviroment Holder").transform;
                 }
 
                 switch (chosenData.facingDir)
                 {
                     case possibleFacingDirections.Right:
-                        gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj = 
-                            Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(Vector3.right,Vector3.up), GameObject.Find(chosenData.name + " Holder").transform);
+                        gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj =
+                            Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(Vector3.right, Vector3.up), GameObject.Find(chosenData.name.Split(" ").FirstOrDefault() + " Holder").transform);
                         break;
                     case possibleFacingDirections.Left:
                         gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj =
-                            Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(-Vector3.right, Vector3.up), GameObject.Find(chosenData.name + " Holder").transform);
+                            Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(-Vector3.right, Vector3.up), GameObject.Find(chosenData.name.Split(" ").FirstOrDefault() + " Holder").transform);
                         break;
                     case possibleFacingDirections.Forward:
                         gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj =
-                            Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(Vector3.forward, Vector3.up), GameObject.Find(chosenData.name + " Holder").transform);
+                            Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(Vector3.forward, Vector3.up), GameObject.Find(chosenData.name.Split(" ").FirstOrDefault() + " Holder").transform);
                         break;
                     case possibleFacingDirections.Backward:
                         gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj =
-                            Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(-Vector3.forward, Vector3.up), GameObject.Find(chosenData.name + " Holder").transform);
+                            Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(-Vector3.forward, Vector3.up), GameObject.Find(chosenData.name.Split(" ").FirstOrDefault() + " Holder").transform);
                         break;
                 }
-                if(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj != null) currentEnviromentPercentages[returnProperAssetPercentage(chosenData)].numOfAssetCollapsed++;
-                if (currentEnviromentPercentages[returnProperAssetPercentage(chosenData)].currentAssetPercentage >= chosenData.percentageAllowed && !fullAssets.Contains(chosenData))
-                {
-                    //print("Removing " + chosenData.name + " from the allowed spawning pool");
-                    fullAssets.Add(chosenData);
-                }
+                if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj != null) allowedAssetNumbers[returnProperAssetPercentage(chosenData)].numOfAssetCollapsed++;
+                if (allowedAssetNumbers[returnProperAssetPercentage(chosenData)].numOfAssetCollapsed > allowedAssetNumbers[returnProperAssetPercentage(chosenData)].maxNumOfAssets && !fullAssets.Contains(chosenData)) fullAssets.Add(chosenData);
+
 
                 emptySpaceIds.Remove(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellId);
-                emptySpacesLeftOnLevel--;
-
-                if (fullAssets.Count == dataList.listOfAssets.Count - 1 && !fullAssets.Contains(voidAsset)) yield break;
 
                 yield return new WaitForSeconds(timeBetweenSpawning);
             }
-            if (fullAssets.Count == dataList.listOfAssets.Count - 1 && !fullAssets.Contains(voidAsset)) yield break;
         }
-        if (voidAsset != null) 
+        if (voidAsset != null)
+        {
+            Destroy(GameObject.Find(voidAsset.name + " Holder"));
+        }
+
+        print("Finished Generating Enviroment");
+    }
+
+    public void generateMapVoid()
+    {
+        for (int x = 0; x < gridHeight; x++)
+        {
+            List<Vector3Int> emptySpaceIds = new List<Vector3Int>();
+            for (int a = 0; a < gridWidth; a++)
+            {
+                for (int b = 0; b < gridDepth; b++)
+                {
+                    if (gridArray[a, x, b].dataAssigned == null) emptySpaceIds.Add(gridArray[a, x, b].cellId);
+                }
+            }
+
+            for (emptySpacesLeftOnLevel = gridWidth * gridDepth; emptySpacesLeftOnLevel > 0; emptySpacesLeftOnLevel--)
+            {
+
+                if (emptySpaceIds.Count == 0) break;
+                if (emptySpacesLeftOnLevel == gridWidth * gridDepth && x == 0)
+                {
+                    randomCellId = startingCellId;
+                }
+                else if (emptySpacesLeftOnLevel < gridWidth * gridDepth && adjacentEmptyCells.Count > 0)
+                {
+                    randomCellId = adjacentEmptyCells[Random.Range(0, adjacentEmptyCells.Count)];
+                }
+                else if (emptySpacesLeftOnLevel < gridWidth * gridDepth && adjacentEmptyCells.Count == 0)
+                {
+                    randomCellId = emptySpaceIds[Random.Range(0, emptySpaceIds.Count)];
+                }
+
+
+
+
+                adjacentEmptyCells = getAdjacentCells(randomCellId, true);
+                Vector3 worldPositionForCell = getCellPosInWorldspace(randomCellId.x, randomCellId.y, randomCellId.z);
+                Vector3 posOffset = new Vector3(cellSizeX / 2, cellSizeY / 2, cellSizeZ / 2);
+
+
+
+                if (fullAssets.Count > 0)
+                    gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell = gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Except(fullAssets).ToList();
+
+                if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count > 0)
+                {
+                    chosenData = gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell[Random.Range(0, gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count)];
+                }
+                //else if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].allowedAsssetsInCell.Count <= 0) chosenData = bruteForceData(randomCellId);
+
+                gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned = chosenData;
+                setAdjacentRules(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellId);
+
+                if (allowedAssetNumbers[returnProperAssetPercentage(chosenData)].numOfAssetCollapsed == 0 && !GameObject.Find(chosenData.name.Split(" ").FirstOrDefault() + " Holder"))
+                {
+                    GameObject tempObj = new GameObject(chosenData.name.Split(" ").FirstOrDefault() + " Holder");
+                    tempObj.transform.parent = GameObject.Find("Enviroment Holder").transform;
+                }
+
+                switch (chosenData.facingDir)
+                {
+                    case possibleFacingDirections.Right:
+                        gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj =
+                            Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(Vector3.right, Vector3.up), GameObject.Find(chosenData.name.Split(" ").FirstOrDefault() + " Holder").transform);
+                        break;
+                    case possibleFacingDirections.Left:
+                        gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj =
+                            Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(-Vector3.right, Vector3.up), GameObject.Find(chosenData.name.Split(" ").FirstOrDefault() + " Holder").transform);
+                        break;
+                    case possibleFacingDirections.Forward:
+                        gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj =
+                            Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(Vector3.forward, Vector3.up), GameObject.Find(chosenData.name.Split(" ").FirstOrDefault() + " Holder").transform);
+                        break;
+                    case possibleFacingDirections.Backward:
+                        gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj =
+                            Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(-Vector3.forward, Vector3.up), GameObject.Find(chosenData.name.Split(" ").FirstOrDefault() + " Holder").transform);
+                        break;
+                }
+                if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj != null) allowedAssetNumbers[returnProperAssetPercentage(chosenData)].numOfAssetCollapsed++;
+                if (allowedAssetNumbers[returnProperAssetPercentage(chosenData)].numOfAssetCollapsed > allowedAssetNumbers[returnProperAssetPercentage(chosenData)].maxNumOfAssets && !fullAssets.Contains(chosenData)) fullAssets.Add(chosenData);
+
+
+                emptySpaceIds.Remove(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellId);
+
+            }
+        }
+        if (voidAsset != null)
         {
             Destroy(GameObject.Find(voidAsset.name + " Holder"));
         }
@@ -221,15 +299,37 @@ public class WFCGenerator : MonoBehaviour
 
         List<assetData> tempDataList;
 
-        tempDataList = dataList.listOfAssets;
+        var listOfLists = new List<List<assetData>>();
 
-        if(cellId.x !=0 && gridArray[cellId.x - 1, cellId.y, cellId.z].cellObj != null) tempDataList = tempDataList.Intersect(gridArray[cellId.x-1, cellId.y, cellId.z].dataAssigned.allowedAssetsRight).ToList();
-        if (cellId.x != gridWidth-1 && gridArray[cellId.x + 1, cellId.y, cellId.z].cellObj != null) tempDataList = tempDataList.Intersect(gridArray[cellId.x+1, cellId.y, cellId.z].dataAssigned.allowedAssetsLeft).ToList();
-        if (cellId.z != 0 && gridArray[cellId.x, cellId.y, cellId.z - 1].cellObj != null) tempDataList = tempDataList.Intersect(gridArray[cellId.x, cellId.y, cellId.z-1].dataAssigned.allowedAssetsForward).ToList();
-        if (cellId.z != gridDepth-1 && gridArray[cellId.x, cellId.y, cellId.z + 1].cellObj != null) tempDataList = tempDataList.Intersect(gridArray[cellId.x, cellId.y, cellId.z+1].dataAssigned.allowedAssetsBackward).ToList();
+        if (cellId.x != gridWidth - 1 && gridArray[cellId.x + 1, cellId.y, cellId.z].dataAssigned != null)
+        {
+            listOfLists.Add(gridArray[cellId.x + 1, cellId.y, cellId.z].dataAssigned.allowedAssetsLeft);
+        }
 
-        fullAssets = new List<assetData>();
-        tempDataList.Remove(voidAsset);
+        if (cellId.x != 0 && gridArray[cellId.x - 1, cellId.y, cellId.z].dataAssigned != null)
+        {
+            listOfLists.Add(gridArray[cellId.x - 1, cellId.y, cellId.z].dataAssigned.allowedAssetsRight);
+        }
+
+        if (cellId.z != gridDepth - 1 && gridArray[cellId.x, cellId.y, cellId.z + 1].dataAssigned != null)
+        {
+            listOfLists.Add(gridArray[cellId.x, cellId.y, cellId.z + 1].dataAssigned.allowedAssetsBackward);
+        }
+
+        if (cellId.z != 0 && gridArray[cellId.x, cellId.y, cellId.z - 1].dataAssigned != null)
+        {
+
+            listOfLists.Add(gridArray[cellId.x, cellId.y, cellId.z - 1].dataAssigned.allowedAssetsForward);
+        }
+
+        if (listOfLists.Count == 0) listOfLists.Add(dataList.listOfAssets);
+
+        tempDataList = listOfLists.Aggregate<IEnumerable<assetData>>((previousList, nextList) => previousList.Intersect(nextList)).ToList();
+        if(tempDataList.Count == 0)
+        {
+            Debug.Break();
+        }
+
         return (tempDataList[Random.Range(0, tempDataList.Count)]);
     }
 
@@ -240,13 +340,14 @@ public class WFCGenerator : MonoBehaviour
         if (cellId.y != gridHeight - 1 && gridArray[cellId.x, cellId.y + 1, cellId.z].dataAssigned == null)
         {
             gridArray[cellId.x, cellId.y + 1, cellId.z].allowedAsssetsInCell = gridArray[cellId.x, cellId.y + 1, cellId.z].allowedAsssetsInCell.Intersect(gridArray[cellId.x, cellId.y, cellId.z].dataAssigned.allowedAssetsAbove).ToList();
+            
         }
 
         //Set The Lower Adjacent Limits
         if (cellId.y != 0 && gridArray[cellId.x, cellId.y - 1, cellId.z].dataAssigned == null)
         {
             gridArray[cellId.x, cellId.y - 1, cellId.z].allowedAsssetsInCell = gridArray[cellId.x, cellId.y - 1, cellId.z].allowedAsssetsInCell.Intersect(gridArray[cellId.x, cellId.y, cellId.z].dataAssigned.allowedAssetsBelow).ToList();
-
+            
         }
 
         //Set The Right Adjacent Limits
@@ -254,14 +355,14 @@ public class WFCGenerator : MonoBehaviour
         {
             gridArray[cellId.x + 1, cellId.y, cellId.z].allowedAsssetsInCell = gridArray[cellId.x + 1, cellId.y, cellId.z].allowedAsssetsInCell.Intersect(gridArray[cellId.x, cellId.y, cellId.z].dataAssigned.allowedAssetsRight).ToList();
 
-
+            
         }
 
         //Set The Left Adjacent Limits
         if (cellId.x != 0 && gridArray[cellId.x - 1, cellId.y, cellId.z].dataAssigned == null)
         {
             gridArray[cellId.x - 1, cellId.y, cellId.z].allowedAsssetsInCell = gridArray[cellId.x - 1, cellId.y, cellId.z].allowedAsssetsInCell.Intersect(gridArray[cellId.x, cellId.y, cellId.z].dataAssigned.allowedAssetsLeft).ToList();
-
+            
         }
 
         //Set The Forward Adjacent Limits
@@ -275,7 +376,7 @@ public class WFCGenerator : MonoBehaviour
         if (cellId.z != 0 && gridArray[cellId.x, cellId.y, cellId.z - 1].dataAssigned == null)
         {
             gridArray[cellId.x, cellId.y, cellId.z - 1].allowedAsssetsInCell = gridArray[cellId.x, cellId.y, cellId.z - 1].allowedAsssetsInCell.Intersect(gridArray[cellId.x, cellId.y, cellId.z].dataAssigned.allowedAssetsBackward).ToList();
-
+            
         }
     }
 
@@ -293,7 +394,8 @@ public class WFCGenerator : MonoBehaviour
                 if (gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].dataAssigned == null) cellsToReturn.Add(gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z + 1].cellId);
             if (cellId.z != 0)
                 if (gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].dataAssigned == null) cellsToReturn.Add(gridArray[(int)cellId.x, (int)cellId.y, (int)cellId.z - 1].cellId);
-        } else if (!getEmpty)
+        }
+        else if (!getEmpty)
         {
             if (cellId.x != gridWidth - 1)
                 cellsToReturn.Add(gridArray[(int)cellId.x + 1, (int)cellId.y, (int)cellId.z].cellId);
@@ -324,21 +426,12 @@ public class WFCGenerator : MonoBehaviour
         return new Vector3(tempPosX, tempPosY, tempPosZ);
     }
 
-    //Updates The Current percentage Count of an asset
-    void updatePercentageCount()
-    {
-        for (int i = 0; i < currentEnviromentPercentages.Length - 1; i++)
-        {
-            currentEnviromentPercentages[i].currentAssetPercentage = (float)currentEnviromentPercentages[i].numOfAssetCollapsed / (gridWidth * gridDepth * gridHeight);
-        }
-    }
-
     //Returns the asset percentage index of the asset given
     int returnProperAssetPercentage(assetData assetToGive)
     {
-        for (int i = 0; i < currentEnviromentPercentages.Length; i++)
+        for (int i = 0; i < allowedAssetNumbers.Length; i++)
         {
-            if (currentEnviromentPercentages[i].assetDataForPercentage == assetToGive) return i;
+            if (allowedAssetNumbers[i].assetDataForPercentage == assetToGive) return i;
         }
         return 0;
     }
@@ -446,25 +539,21 @@ public struct gridCell
         cellId = Id;
         cellPos = Pos;
         cellSize = Size;
-        allowedAsssetsInCell = new List<assetData>();
-        for (int i = 0; i < dataList.listOfAssets.Count; i++)
-        {
-            allowedAsssetsInCell.Add(dataList.listOfAssets[i]);
-        }
+        allowedAsssetsInCell = dataList.listOfAssets;
         dataAssigned = null;
         cellObj = null;
     }
 }
 [System.Serializable]
-public class assetPercentage
+public class assetLimit
 {
-    public float currentAssetPercentage;
+    public int maxNumOfAssets;
     public int numOfAssetCollapsed;
     public assetData assetDataForPercentage;
 
-    public assetPercentage(assetData dataTogive)
+    public assetLimit(assetData dataTogive, int gridSize, int moduloOffset)
     {
         assetDataForPercentage = dataTogive;
-        currentAssetPercentage = 0;
+        maxNumOfAssets = dataTogive.numOfObjAllowed * (gridSize % moduloOffset) ;
     }
 }

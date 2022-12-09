@@ -363,21 +363,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellStartingPos: {fileID: 838287154}
-  gridWidth: 5
-  gridHeight: 2
-  gridDepth: 5
+  gridWidth: 25
+  gridHeight: 5
+  gridDepth: 25
   cellSizeX: 1
   cellSizeY: 1
   cellSizeZ: 1
   centerGridOnGeneration: 0
-  dataList: {fileID: 11400000, guid: 823c37667f3fbd0479a9ef1f619a0882, type: 2}
+  dataList: {fileID: 11400000, guid: dafbc6bbd9939444a8111ff9fc6e942f, type: 2}
   voidAsset: {fileID: 11400000, guid: ccac0d5a4fc078145b2a0b6804c61817, type: 2}
   startingCellId: {x: 0, y: 0, z: 0}
-  currentEnviromentPercentages: []
-  displayCellIDs: 1
-  displayCellLines: 1
+  allowedAssetNumbers: []
+  edgeFillList: {fileID: 0}
+  maxNumberOffset: 2
+  emptySpacesLeftOnLevel: 0
+  displayCellIDs: 0
+  displayCellLines: 0
   advancedSettings: 0
-  timeBetweenSpawning: 0.1
+  timeBetweenSpawning: 0
 --- !u!4 &1456003384
 Transform:
   m_ObjectHideFlags: 0
@@ -405,9 +408,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac54714af7b85042b0d9aefee2dee53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  list: {fileID: 11400000, guid: 823c37667f3fbd0479a9ef1f619a0882, type: 2}
+  list: {fileID: 11400000, guid: dafbc6bbd9939444a8111ff9fc6e942f, type: 2}
   currentAssetListIndex: 0
-  finishedPopulatingCurrentAsset: 1
+  clearBefore: 1
 --- !u!1 &1558121576
 GameObject:
   m_ObjectHideFlags: 0

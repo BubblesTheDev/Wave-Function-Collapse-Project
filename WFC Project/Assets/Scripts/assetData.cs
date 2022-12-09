@@ -10,9 +10,9 @@ public class assetData : ScriptableObject
     public int minVerticalLevel = 0;
     public int maxVerticalLevel = 5;
     public possibleFacingDirections facingDir;
-    [Range(.01f,1),]
-    public float percentageAllowed = 1;
+    public int numOfObjAllowed;
     public GameObject primaryAsset;
+    public bool fillEmptyWithVoid, fillAboveSlot, fillBelowSlot, fillRightSlot, fillLeftSlot, fillForwardSlot, fillBackwardSlot;
     public List<assetData> allowedAssetsAbove;
     public List<assetData> allowedAssetsBelow;
     public List<assetData> allowedAssetsRight;
