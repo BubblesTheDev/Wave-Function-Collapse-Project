@@ -111,7 +111,7 @@ public class SnapshotCamera : MonoBehaviour {
     /// <returns>A FileInfo pointing to the created PNG file</returns>
     public static FileInfo SavePNG (byte[] bytes, string filename = "", string directory = "")
     {
-        directory = directory != "" ? Directory.CreateDirectory(directory).FullName : Directory.CreateDirectory(Path.Combine(Application.dataPath, "../Snapshots")).FullName;
+        directory = directory != "" ? Directory.CreateDirectory(directory).FullName : Directory.CreateDirectory(Path.Combine(Application.dataPath, "../Assets/Snapshots")).FullName;
         filename = filename != "" ? SanitizeFilename(filename) + ".png" : System.DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-ffff") + ".png";
         string filepath = Path.Combine(directory, filename);
 

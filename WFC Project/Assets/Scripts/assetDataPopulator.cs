@@ -14,7 +14,6 @@ public class assetDataPopulator : MonoBehaviour
     public assetDataList list;
     public int gridWidth;
     public cellBlock[] cellBlocks;
-    public int currentCellblockIndex;
 
     //UI Variables
     public TextMeshProUGUI assetNameDisplay;
@@ -145,7 +144,7 @@ public class assetDataPopulator : MonoBehaviour
     {
         if (cellBlocks.Length > 0)
         {
-            assetNameDisplay.text = "Asset Name: " + cellBlocks[currentCellblockIndex].primeCell.dataAssigned.ToString().Split("(assetData)").FirstOrDefault();
+            assetNameDisplay.text = "Asset Name: " + cellBlocks[assetIndex].primeCell.dataAssigned.ToString().Split("(assetData)").FirstOrDefault();
 
         }
     }

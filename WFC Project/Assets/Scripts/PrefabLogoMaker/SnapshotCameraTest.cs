@@ -15,10 +15,15 @@ public class SnapshotCameraTest : MonoBehaviour {
     [HideInInspector]
     public assetDataPopulator populator;
     public int assetIndex;
-
     private SnapshotCamera snapshotCamera;
     private Texture2D texture;
     public bool camActive = false;
+
+
+    private void Awake()
+    {
+        
+    }
 
     void OnGUI()
     {
@@ -43,8 +48,14 @@ public class SnapshotCameraTest : MonoBehaviour {
             // For a bit of fun you can try removing this and watching the memory profiler while for example continuously changing the rotation to trigger UpdatePreview()
             Object.Destroy(texture);
 
+            
+            if (objectToSnapshot.name.Contains("Right") && rotation != new Vector3(220, 250, 130)) rotation = new Vector3(220, 250, 130);
+            if (objectToSnapshot.name.Contains("Left") && rotation != new Vector3(400, 250, 55)) rotation = new Vector3(400, 250, 55);
+            if (objectToSnapshot.name.Contains("Forward") && rotation != new Vector3(325, 300, 50)) rotation = new Vector3(325, 300, 50);
+            if (objectToSnapshot.name.Contains("Backward") && rotation != new Vector3(145, 295, 130)) rotation = new Vector3(145, 295, 130);
+
             // Take a new snapshot of the objectToSnapshot
-            texture = snapshotCamera.TakeObjectSnapshot(objectToSnapshot, backgroundColor, position, Quaternion.Euler(rotation), scale, width: 512, height: 512);
+            texture = snapshotCamera.TakeObjectSnapshot(objectToSnapshot, backgroundColor, position, Quaternion.Euler(rotation) , scale, width: 512, height: 512);
         }
     }
 
@@ -60,13 +71,16 @@ public class SnapshotCameraTest : MonoBehaviour {
 
 
             objectToSnapshot = populator.cellBlocks[assetIndex].primeCell.cellObj;
+
+
+            if(Input.GetKeyUp(KeyCode.A)) print(rotation + objectToSnapshot.transform.rotation.eulerAngles);
         }
     }
 
     public void takePicture()
     {
         UpdatePreview();
-        System.IO.FileInfo fi = SnapshotCamera.SavePNG(texture);
+        System.IO.FileInfo fi = SnapshotCamera.SavePNG(texture, objectToSnapshot.name + " Logo");
 
         Debug.Log(string.Format("Snapshot {0} saved to {1}", fi.Name, fi.DirectoryName));
     }
@@ -85,12 +99,13 @@ public class SnapshotCameraTest : MonoBehaviour {
     public void nextAsset()
     {
         assetIndex++;
+        if (assetIndex > GameObject.Find("Game Manager").GetComponent<assetDataPopulator>().list.listOfAssets.Count - 1) assetIndex = 0;
     }
 
     public void prevAsset()
     {
         assetIndex--;
-
+        if (assetIndex < 0 ) assetIndex = GameObject.Find("Game Manager").GetComponent<assetDataPopulator>().list.listOfAssets.Count - 1;
     }
 
 }
