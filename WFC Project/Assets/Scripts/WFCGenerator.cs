@@ -20,6 +20,7 @@ public class WFCGenerator : MonoBehaviour
 
     //Level Generator Settings
     public assetDataList dataList;
+    assetDataList tempDataList;
     public assetData voidAsset;
     public Vector3Int startingCellId;
     Vector3Int randomCellId;
@@ -88,7 +89,7 @@ public class WFCGenerator : MonoBehaviour
                     //temp variables to do basic calculation
                     Vector3Int tempId = new Vector3Int(x, y, z);
                     Vector3 tempSize = new Vector3(cellSizeX, cellSizeY, cellSizeZ);
-                    assetDataList tempDataList = new assetDataList();
+                    tempDataList = new assetDataList();
 
                     for (int i = 0; i < dataList.listOfAssets.Count; i++)
                     {
@@ -184,6 +185,9 @@ public class WFCGenerator : MonoBehaviour
                             Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(-Vector3.forward, Vector3.up), GameObject.Find(chosenData.name.Split(" ").FirstOrDefault() + " Holder").transform);
                         break;
                 }
+                
+                gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj.name = gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.name;
+
                 if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj != null) allowedAssetNumbers[returnProperAssetPercentage(chosenData)].numOfAssetCollapsed++;
                 if (allowedAssetNumbers[returnProperAssetPercentage(chosenData)].numOfAssetCollapsed > allowedAssetNumbers[returnProperAssetPercentage(chosenData)].maxNumOfAssets && !fullAssets.Contains(chosenData)) fullAssets.Add(chosenData);
 
@@ -277,6 +281,9 @@ public class WFCGenerator : MonoBehaviour
                             Instantiate(gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.primaryAsset, worldPositionForCell + posOffset, Quaternion.LookRotation(-Vector3.forward, Vector3.up), GameObject.Find(chosenData.name.Split(" ").FirstOrDefault() + " Holder").transform);
                         break;
                 }
+
+                gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj.name = gridArray[randomCellId.x, randomCellId.y, randomCellId.z].dataAssigned.name;
+
                 if (gridArray[randomCellId.x, randomCellId.y, randomCellId.z].cellObj != null) allowedAssetNumbers[returnProperAssetPercentage(chosenData)].numOfAssetCollapsed++;
                 if (allowedAssetNumbers[returnProperAssetPercentage(chosenData)].numOfAssetCollapsed > allowedAssetNumbers[returnProperAssetPercentage(chosenData)].maxNumOfAssets && !fullAssets.Contains(chosenData)) fullAssets.Add(chosenData);
 
@@ -297,7 +304,7 @@ public class WFCGenerator : MonoBehaviour
     assetData bruteForceData(Vector3Int cellId)
     {
 
-        List<assetData> tempDataList;
+        List<assetData> tempDataListToReturn;
 
         var listOfLists = new List<List<assetData>>();
 
@@ -324,13 +331,14 @@ public class WFCGenerator : MonoBehaviour
 
         if (listOfLists.Count == 0) listOfLists.Add(dataList.listOfAssets);
 
-        tempDataList = listOfLists.Aggregate<IEnumerable<assetData>>((previousList, nextList) => previousList.Intersect(nextList)).ToList();
-        if(tempDataList.Count == 0)
+        tempDataListToReturn = listOfLists.Aggregate<IEnumerable<assetData>>((previousList, nextList) => previousList.Intersect(nextList)).ToList();
+        if(tempDataListToReturn.Count == 0)
         {
-            Debug.Break();
-        }
+            //Debug.Break();
+            return tempDataList.listOfAssets[Random.Range(0, tempDataList.listOfAssets.Count)];
+        } else return (tempDataListToReturn[Random.Range(0, tempDataListToReturn.Count)]);
 
-        return (tempDataList[Random.Range(0, tempDataList.Count)]);
+
     }
 
     //This function sets the adjacent rules of a prime cell
@@ -525,7 +533,7 @@ public class WFCGenerator : MonoBehaviour
 
 [System.Serializable]
 //Cell struct with basic information required
-public struct gridCell
+ struct gridCell
 {
     public Vector3Int cellId;
     public Vector3 cellPos;
