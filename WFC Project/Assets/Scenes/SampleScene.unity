@@ -123,234 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &5151188
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7528489425205826254, guid: c690d3eab55c1744b85008a295289c45, type: 3}
-      propertyPath: m_Name
-      value: Terrain Corner Outer RF
-      objectReference: {fileID: 0}
-    - target: {fileID: 7935355349553091537, guid: c690d3eab55c1744b85008a295289c45, type: 3}
-      propertyPath: m_RootOrder
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 7935355349553091537, guid: c690d3eab55c1744b85008a295289c45, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7935355349553091537, guid: c690d3eab55c1744b85008a295289c45, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7935355349553091537, guid: c690d3eab55c1744b85008a295289c45, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7935355349553091537, guid: c690d3eab55c1744b85008a295289c45, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7935355349553091537, guid: c690d3eab55c1744b85008a295289c45, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7935355349553091537, guid: c690d3eab55c1744b85008a295289c45, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7935355349553091537, guid: c690d3eab55c1744b85008a295289c45, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7935355349553091537, guid: c690d3eab55c1744b85008a295289c45, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7935355349553091537, guid: c690d3eab55c1744b85008a295289c45, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7935355349553091537, guid: c690d3eab55c1744b85008a295289c45, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c690d3eab55c1744b85008a295289c45, type: 3}
---- !u!1001 &171740743
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8065883060681086876, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_Name
-      value: Terrain Ramp F (2)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
---- !u!1001 &294620735
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2550038074446755062, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550038074446755062, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.99999994
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550038074446755062, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550038074446755062, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550038074446755062, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550038074446755062, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550038074446755062, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550038074446755062, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550038074446755062, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550038074446755062, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2550038074446755062, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5197046609343982136, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
-      propertyPath: m_Name
-      value: Terrain Cliff F
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 51f8a1efe6c466046b31cb858cdbba9f, type: 3}
---- !u!1001 &447579179
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8065883060681086876, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_Name
-      value: Terrain Ramp F
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +215,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &838287154
 GameObject:
@@ -474,7 +246,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
@@ -558,65 +330,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 35, y: 45, z: 0}
---- !u!1001 &1318649077
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4108700260142899309, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
-      propertyPath: m_Name
-      value: Terrain Corner Inner RF
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207235968873854954, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
-      propertyPath: m_RootOrder
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207235968873854954, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207235968873854954, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207235968873854954, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207235968873854954, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207235968873854954, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207235968873854954, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.000000014901161
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207235968873854954, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207235968873854954, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207235968873854954, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207235968873854954, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6b04470808d09c14d913ba9cdddfc36f, type: 3}
 --- !u!1 &1456003382
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,7 +342,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1456003384}
   - component: {fileID: 1456003383}
-  - component: {fileID: 1456003385}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -642,27 +356,26 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1456003382}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cea7ac745902f641b5b533ea9e0748f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cellStartingPos: {fileID: 838287154}
-  gridWidth: 5
-  gridHeight: 1
-  gridDepth: 5
+  gridWidth: 15
+  gridHeight: 4
+  gridDepth: 15
   cellSizeX: 1
   cellSizeY: 1
   cellSizeZ: 1
   centerGridOnGeneration: 0
-  dataList: {fileID: 11400000, guid: dafbc6bbd9939444a8111ff9fc6e942f, type: 2}
+  dataList: {fileID: 11400000, guid: 1246f05b93b0ebd429fe79bb9a664dfd, type: 2}
   voidAsset: {fileID: 11400000, guid: ccac0d5a4fc078145b2a0b6804c61817, type: 2}
-  startingCellId: {x: 0, y: 0, z: 0}
+  startingCellId: {x: 8, y: 0, z: 8}
   allowedAssetNumbers: []
   edgeFillList: {fileID: 0}
-  maxNumberOffset: 2
   emptySpacesLeftOnLevel: 0
-  displayCellIDs: 0
+  displayCellIDs: 1
   displayCellLines: 0
   advancedSettings: 0
   timeBetweenSpawning: 0.1
@@ -679,23 +392,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1456003385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1456003382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ac54714af7b85042b0d9aefee2dee53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  list: {fileID: 11400000, guid: 3e63cc39ab64010429d3bdba637a64f3, type: 2}
-  currentAssetListIndex: 0
-  clearBefore: 1
 --- !u!1 &1558121576
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,231 +524,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2000552581
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8065883060681086876, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_Name
-      value: Terrain Ramp F (1)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
---- !u!1001 &2118657773
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6896272152243313155, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8065883060681086876, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
-      propertyPath: m_Name
-      value: Terrain Ramp F (3)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e65b0a617e58f174b9ba77c5f33a8209, type: 3}
---- !u!1001 &1122784808297723611
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4248665002685323266, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6534039493519562062, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
-      propertyPath: m_Name
-      value: Terrain Ramp F Cliff L
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 96e54a7734a456443b7725b1e77653db, type: 3}
---- !u!1001 &4287905109651083226
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4248665002685323266, guid: 655eb59e11403974582be43431b3ab52, type: 3}
-      propertyPath: m_RootOrder
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 655eb59e11403974582be43431b3ab52, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 655eb59e11403974582be43431b3ab52, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 655eb59e11403974582be43431b3ab52, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 655eb59e11403974582be43431b3ab52, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 655eb59e11403974582be43431b3ab52, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 655eb59e11403974582be43431b3ab52, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 655eb59e11403974582be43431b3ab52, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 655eb59e11403974582be43431b3ab52, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 655eb59e11403974582be43431b3ab52, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4248665002685323266, guid: 655eb59e11403974582be43431b3ab52, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6534039493519562062, guid: 655eb59e11403974582be43431b3ab52, type: 3}
-      propertyPath: m_Name
-      value: Terrain Ramp F Cliff R
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 655eb59e11403974582be43431b3ab52, type: 3}
