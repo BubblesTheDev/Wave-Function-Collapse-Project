@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6087340488838904297}
   - component: {fileID: 2021753699325816334}
+  - component: {fileID: 2840534039966455202}
   m_Layer: 0
   m_Name: Air Block
   m_TagString: Untagged
@@ -41,6 +42,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3612098306302503803}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2840534039966455202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3612098306302503803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffdb509dc3fd8074e9a08c011406c9f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToDestroy: 0.1
 --- !u!1 &7004445846063141641
 GameObject:
   m_ObjectHideFlags: 0

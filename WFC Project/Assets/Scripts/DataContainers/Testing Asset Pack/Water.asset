@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f72be2d1e03026f42a44a5db015e384a, type: 3}
   m_Name: Water
   m_EditorClassIdentifier: 
-  assetName: Water
-  assetId: 3
-  minVerticalLevel: 0
-  maxVerticalLevel: 8
-  percentageAllowed: 0.6
+  assetLogo: {fileID: 0}
+  facingDir: 0
+  minimumAxisLimit: {x: 1, y: 0, z: 1}
+  maximumAxisLimit: {x: 49, y: 2, z: 49}
+  percentageChanceOfAsset: 0.2
   primaryAsset: {fileID: 2941731608752717992, guid: 4ce4699d0a80d9742bfcd5009201cfaa, type: 3}
   allowedAssetsAbove:
   - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}

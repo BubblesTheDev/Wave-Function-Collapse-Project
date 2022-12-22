@@ -195,13 +195,14 @@ public class assetDataPopulator : MonoBehaviour
 
     public void populateAssetSide()
     {
-        string thingCalling = EventSystem.current.currentSelectedGameObject.name;
+        GameObject thingCalling = EventSystem.current.currentSelectedGameObject;
 
-        if (GameObject.Find(thingCalling).GetComponent<Toggle>().isOn) GameObject.Find(thingCalling).GetComponent<Image>().color = Color.green;
-        else GameObject.Find(thingCalling).GetComponent<Image>().color = Color.red;
-        if (GameObject.Find(thingCalling).transform.parent.gameObject.name.Contains("Top"))
+
+        /*if (thingCalling.GetComponent<Toggle>().isOn) thingCalling.GetComponent<Image>().color = Color.green;
+        else thingCalling.GetComponent<Image>().color = Color.red;
+        if (thingCalling.transform.parent.gameObject.name.Contains("Top"))
         {
-            if(!list.listOfAssets[assetIndex].allowedAssetsAbove.Contains(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault())) 
+            if(!list.listOfAssets[assetIndex].allowedAssetsAbove.Contains(list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault())) 
             {
                 list.listOfAssets[assetIndex].allowedAssetsAbove.Add(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault());
                 cellBlocks[assetIndex].cellAbove.dataAssigned = list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault();
@@ -225,53 +226,53 @@ public class assetDataPopulator : MonoBehaviour
                         break;
                 }
             }
-            else if(list.listOfAssets[assetIndex].allowedAssetsAbove.Contains(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault()))
+            else if(list.listOfAssets[assetIndex].allowedAssetsAbove.Contains(list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault()))
             {
-                list.listOfAssets[assetIndex].allowedAssetsAbove.Remove(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault());
+                list.listOfAssets[assetIndex].allowedAssetsAbove.Remove(list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault());
                 foreach (Transform child in cellBlocks[assetIndex].primeCell.cellObj.transform)
                 {
-                    if (child.name == list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault().primaryAsset.name + "(Clone)") Destroy(child.gameObject);
+                    if (child.name == list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault().primaryAsset.name + "(Clone)") Destroy(child.gameObject);
                 }
             }
         }
-        if (GameObject.Find(thingCalling).transform.parent.gameObject.name.Contains("Bot"))
+        if (thingCalling.transform.parent.gameObject.name.Contains("Bot"))
         {
-            if (!list.listOfAssets[assetIndex].allowedAssetsBelow.Contains(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault()))
+            if (!list.listOfAssets[assetIndex].allowedAssetsBelow.Contains(list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault()))
             {
-                list.listOfAssets[assetIndex].allowedAssetsBelow.Add(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault());
-                cellBlocks[assetIndex].cellBelow.dataAssigned = list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault();
+                list.listOfAssets[assetIndex].allowedAssetsBelow.Add(list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault());
+                cellBlocks[assetIndex].cellBelow.dataAssigned = list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault();
 
-                switch(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault().facingDir)
+                switch(list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault().facingDir)
                 {
                     case possibleFacingDirections.Right: 
-                cellBlocks[assetIndex].cellBelow.cellObj = Instantiate(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault().primaryAsset, 
+                cellBlocks[assetIndex].cellBelow.cellObj = Instantiate(list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault().primaryAsset, 
                     cellBlocks[assetIndex].cellBelow.cellPos, Quaternion.LookRotation(Vector3.right), cellBlocks[assetIndex].primeCell.cellObj.transform);
                         break;
                     case possibleFacingDirections.Left: 
-                cellBlocks[assetIndex].cellBelow.cellObj = Instantiate(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault().primaryAsset, 
+                cellBlocks[assetIndex].cellBelow.cellObj = Instantiate(list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault().primaryAsset, 
                     cellBlocks[assetIndex].cellBelow.cellPos, Quaternion.LookRotation(-Vector3.right), cellBlocks[assetIndex].primeCell.cellObj.transform);
                         break;
                     case possibleFacingDirections.Forward: 
-                cellBlocks[assetIndex].cellBelow.cellObj = Instantiate(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault().primaryAsset, 
+                cellBlocks[assetIndex].cellBelow.cellObj = Instantiate(list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault().primaryAsset, 
                     cellBlocks[assetIndex].cellBelow.cellPos, Quaternion.LookRotation(Vector3.forward), cellBlocks[assetIndex].primeCell.cellObj.transform);
                         break;
                     case possibleFacingDirections.Backward: 
-                cellBlocks[assetIndex].cellBelow.cellObj = Instantiate(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault().primaryAsset, 
+                cellBlocks[assetIndex].cellBelow.cellObj = Instantiate(list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault().primaryAsset, 
                     cellBlocks[assetIndex].cellBelow.cellPos, Quaternion.LookRotation(-Vector3.forward), cellBlocks[assetIndex].primeCell.cellObj.transform);
                         break;
                 }
 
             }
-            else if (list.listOfAssets[assetIndex].allowedAssetsBelow.Contains(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault()))
+            else if (list.listOfAssets[assetIndex].allowedAssetsBelow.Contains(list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault()))
             {
-                list.listOfAssets[assetIndex].allowedAssetsBelow.Remove(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault());
+                list.listOfAssets[assetIndex].allowedAssetsBelow.Remove(list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault());
                 foreach (Transform child in cellBlocks[assetIndex].primeCell.cellObj.transform)
                 {
-                    if (child.name == list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault().primaryAsset.name + "(Clone)") Destroy(child.gameObject);
+                    if (child.name == list.listOfAssets.Where(assetData => assetData.name == thingCalling.name).SingleOrDefault().primaryAsset.name + "(Clone)") Destroy(child.gameObject);
                 }
             }
         }
-        if (GameObject.Find(thingCalling).transform.parent.gameObject.name.Contains("Right"))
+        if (thingCalling.transform.parent.gameObject.name.Contains("Right"))
         {
             if (!list.listOfAssets[assetIndex].allowedAssetsRight.Contains(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault()))
             {
@@ -306,7 +307,7 @@ public class assetDataPopulator : MonoBehaviour
                 }
             }
         }
-        if (GameObject.Find(thingCalling).transform.parent.gameObject.name.Contains("Left"))
+        if (thingCalling.transform.parent.gameObject.name.Contains("Left"))
         {
             if (!list.listOfAssets[assetIndex].allowedAssetsLeft.Contains(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault()))
             {
@@ -341,7 +342,7 @@ public class assetDataPopulator : MonoBehaviour
                 }
             }
         }
-        if (GameObject.Find(thingCalling).transform.parent.gameObject.name.Contains("Front"))
+        if (thingCalling.transform.parent.gameObject.name.Contains("Front"))
         {
             if (!list.listOfAssets[assetIndex].allowedAssetsForward.Contains(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault()))
             {
@@ -376,7 +377,7 @@ public class assetDataPopulator : MonoBehaviour
                 }
             }
         }
-        if (GameObject.Find(thingCalling).transform.parent.gameObject.name.Contains("Back"))
+        if (thingCalling.transform.parent.gameObject.name.Contains("Back"))
         {
             if (!list.listOfAssets[assetIndex].allowedAssetsBackward.Contains(list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault()))
             {
@@ -410,7 +411,7 @@ public class assetDataPopulator : MonoBehaviour
                     if (child.name == list.listOfAssets.Where(assetData => assetData.name == thingCalling).SingleOrDefault().primaryAsset.name + "(Clone)") Destroy(child.gameObject);
                 }
             }
-        }
+        }*/
     }
 
     public void clearAllAssetData()
@@ -432,27 +433,27 @@ public class assetDataPopulator : MonoBehaviour
         {
             for (int x = 0; x < list.listOfAssets[i].allowedAssetsAbove.Count-1; x++)
             {
-                list.listOfAssets[i].allowedAssetsAbove = list.listOfAssets[i].allowedAssetsAbove.Intersect(list.listOfAssets[i].allowedAssetsAbove[x].allowedAssetsBelow).ToList();
+                list.listOfAssets[i].allowedAssetsAbove = list.listOfAssets[i].allowedAssetsAbove.Union(list.listOfAssets[i].allowedAssetsAbove[x].allowedAssetsBelow).ToList();
             }
             for (int x = 0; x < list.listOfAssets[i].allowedAssetsBelow.Count - 1; x++)
             {
-                list.listOfAssets[i].allowedAssetsBelow = list.listOfAssets[i].allowedAssetsBelow.Intersect(list.listOfAssets[i].allowedAssetsBelow[x].allowedAssetsAbove).ToList();
+                list.listOfAssets[i].allowedAssetsBelow = list.listOfAssets[i].allowedAssetsBelow.Union(list.listOfAssets[i].allowedAssetsBelow[x].allowedAssetsAbove).ToList();
             }
             for (int x = 0; x < list.listOfAssets[i].allowedAssetsRight.Count - 1; x++)
             {
-                list.listOfAssets[i].allowedAssetsRight = list.listOfAssets[i].allowedAssetsRight.Intersect(list.listOfAssets[i].allowedAssetsRight[x].allowedAssetsLeft).ToList();
+                list.listOfAssets[i].allowedAssetsRight = list.listOfAssets[i].allowedAssetsRight.Union(list.listOfAssets[i].allowedAssetsRight[x].allowedAssetsLeft).ToList();
             }
             for (int x = 0; x < list.listOfAssets[i].allowedAssetsLeft.Count - 1; x++)
             {
-                list.listOfAssets[i].allowedAssetsLeft = list.listOfAssets[i].allowedAssetsLeft.Intersect(list.listOfAssets[i].allowedAssetsLeft[x].allowedAssetsRight).ToList();
+                list.listOfAssets[i].allowedAssetsLeft = list.listOfAssets[i].allowedAssetsLeft.Union(list.listOfAssets[i].allowedAssetsLeft[x].allowedAssetsRight).ToList();
             }
             for (int x = 0; x < list.listOfAssets[i].allowedAssetsForward.Count - 1; x++)
             {
-                list.listOfAssets[i].allowedAssetsForward = list.listOfAssets[i].allowedAssetsForward.Intersect(list.listOfAssets[i].allowedAssetsForward[x].allowedAssetsBackward).ToList();
+                list.listOfAssets[i].allowedAssetsForward = list.listOfAssets[i].allowedAssetsForward.Union(list.listOfAssets[i].allowedAssetsForward[x].allowedAssetsBackward).ToList();
             }
             for (int x = 0; x < list.listOfAssets[i].allowedAssetsBackward.Count - 1; x++)
             {
-                list.listOfAssets[i].allowedAssetsBackward = list.listOfAssets[i].allowedAssetsBackward.Intersect(list.listOfAssets[i].allowedAssetsBackward[x].allowedAssetsForward).ToList();
+                list.listOfAssets[i].allowedAssetsBackward = list.listOfAssets[i].allowedAssetsBackward.Union(list.listOfAssets[i].allowedAssetsBackward[x].allowedAssetsForward).ToList();
             }
         }
     }

@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f72be2d1e03026f42a44a5db015e384a, type: 3}
   m_Name: House
   m_EditorClassIdentifier: 
-  assetName: House
-  assetId: 4
-  minVerticalLevel: 2
-  maxVerticalLevel: 5
-  percentageAllowed: 0.1
+  assetLogo: {fileID: 0}
+  facingDir: 0
+  minimumAxisLimit: {x: 1, y: 4, z: 1}
+  maximumAxisLimit: {x: 49, y: 6, z: 49}
+  percentageChanceOfAsset: 0.35
   primaryAsset: {fileID: 1300377953887918158, guid: e314bc7bad8f1244c804ab50b147ec70, type: 3}
   allowedAssetsAbove:
   - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
@@ -24,17 +24,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e0e41fbfd8596f74494fb6ce4ffc4a03, type: 2}
   allowedAssetsRight:
   - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
-  - {fileID: 11400000}
-  - {fileID: 11400000, guid: 6f6d653d25073c9479e703a3bb39eebd, type: 2}
   allowedAssetsLeft:
   - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
-  - {fileID: 11400000}
-  - {fileID: 11400000, guid: 6f6d653d25073c9479e703a3bb39eebd, type: 2}
   allowedAssetsForward:
   - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
-  - {fileID: 11400000}
-  - {fileID: 11400000, guid: 6f6d653d25073c9479e703a3bb39eebd, type: 2}
   allowedAssetsBackward:
   - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
-  - {fileID: 11400000}
-  - {fileID: 11400000, guid: 6f6d653d25073c9479e703a3bb39eebd, type: 2}

@@ -10,10 +10,10 @@ public class assetData : ScriptableObject
 {
     public Sprite assetLogo;
     [Space]
-    public int minVerticalLevel = 0;
-    public int maxVerticalLevel = 5;
     public possibleFacingDirections facingDir;
-    public int numOfObjAllowed;
+    public Vector3Int minimumAxisLimit;
+    public Vector3Int maximumAxisLimit;
+    public float percentageChanceOfAsset;
     public GameObject primaryAsset;
     public List<assetData> allowedAssetsAbove;
     public List<assetData> allowedAssetsBelow;

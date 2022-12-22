@@ -9,122 +9,16 @@ public class WFCGeneratorEditor : Editor {
     public bool advancedGridFoldOut = false;
 
     public override void OnInspectorGUI() {
-        //DrawDefaultInspector();
+        DrawDefaultInspector();
         WFCGenerator gen = (WFCGenerator)target;
 
-        GUILayout.Label("Advanced Settings", EditorStyles.boldLabel);
-        gen.advancedSettings = EditorGUILayout.ToggleLeft("  Toggle Advanced Settings", gen.advancedSettings);
-        gen.displayCellIDs = EditorGUILayout.ToggleLeft("   Toggle Cell Ids", gen.displayCellIDs);
-        gen.displayCellLines = EditorGUILayout.ToggleLeft("   Toggle Cell Lines", gen.displayCellLines);
-        
-        GUILayout.Space(10);
 
-        //Shows all simple options if advanced settings inst toggled
-        if (!gen.advancedSettings) {
-            GUILayout.BeginVertical();
-
-
-            //labels and fields for the width, height and depth of the grid
-            GUILayout.Label("Simple Generator Settings", EditorStyles.boldLabel);
-            gen.cellStartingPos = (GameObject)EditorGUILayout.ObjectField("Grid Starting Position", gen.cellStartingPos, typeof(GameObject), true);
-            gen.dataList = (assetDataList)EditorGUILayout.ObjectField("Given Data List", gen.dataList, typeof(assetDataList), true);
-            gen.voidAsset = (assetData)EditorGUILayout.ObjectField("Asset Data To Void", gen.voidAsset, typeof(assetData), true);
-            gen.timeBetweenSpawning = EditorGUILayout.FloatField("Time Between Spawning", gen.timeBetweenSpawning);
-
-            GUILayout.Space(10);
-
-            gen.gridWidth = EditorGUILayout.IntField("Grid Width", gen.gridWidth);
-            gen.gridHeight = EditorGUILayout.IntField("Grid Height", gen.gridHeight);
-            gen.gridDepth = EditorGUILayout.IntField("Grid Depth", gen.gridDepth);
-
-
-            GUILayout.Space(5f);
-            //Creating labels for the cell sizes
-
-            GUILayout.BeginHorizontal();
-
-            GUILayout.Label("Cell Size X");
-            GUILayout.Label("Cell Size Y");
-            GUILayout.Label("Cell Size Z");
-
-            GUILayout.EndHorizontal();
-
-            //Creating fields for the cell sizes
-
-            GUILayout.BeginHorizontal();
-
-            gen.cellSizeX = EditorGUILayout.FloatField(gen.cellSizeX);
-            gen.cellSizeY = EditorGUILayout.FloatField(gen.cellSizeY);
-            gen.cellSizeZ = EditorGUILayout.FloatField(gen.cellSizeZ);
-
-            GUILayout.EndHorizontal();
-
-
-            GUILayout.Space(5f);
-            //Creating labels for the Starting Cell
-
-            GUILayout.BeginHorizontal();
-
-            GUILayout.Label("Starting Cell X Id");
-            GUILayout.Label("Starting Cell Y Id");
-            GUILayout.Label("Starting Cell Z Id");
-
-            GUILayout.EndHorizontal();
-
-            //Creating fields for the cell sizes
-
-            GUILayout.BeginHorizontal();
-
-            gen.startingCellId.x = EditorGUILayout.IntField(gen.startingCellId.x);
-            gen.startingCellId.y = EditorGUILayout.IntField(gen.startingCellId.y);
-            gen.startingCellId.z = EditorGUILayout.IntField(gen.startingCellId.z);
-
-            GUILayout.EndHorizontal();
-
-            
-            GUILayout.EndVertical();
+        GUILayout.Space(10f);
+        if (GUILayout.Button("Regenerate Grid")) gen.gridArray = GridGenerator.generateGrid(gen.gridSize, gen.cellSizes, gen.dataList, gen.cellStartingPos);
+        if (GUILayout.Button("Regenerate Enviroment")) {
+            if (gen.timeBetweenSpawning <= 0) gen.generateMapInstant();
+            else gen.StartCoroutine(gen.generateMap());
         }
-
-        //Shows all advanced options if advanced settings is toggled
-        else if (gen.advancedSettings) {
-            GUILayout.BeginVertical();
-            GUILayout.Label("Advanced Generator Settings", EditorStyles.boldLabel);
-            gen.cellStartingPos = (GameObject)EditorGUILayout.ObjectField("Grid Starting Position", gen.cellStartingPos, typeof(GameObject), true);
-            gen.centerGridOnGeneration = EditorGUILayout.ToggleLeft("   Center grid at the spawn position", gen.centerGridOnGeneration);
-            gen.timeBetweenSpawning = EditorGUILayout.FloatField("Time Between Spawning", gen.timeBetweenSpawning);
-            GUILayout.Space(10);
-
-
-            GUILayout.Label("Grid Generation Settings", EditorStyles.boldLabel);
-            {
-                gen.gridWidth = EditorGUILayout.IntSlider("Grid Width", gen.gridWidth, 1, 10);
-                gen.gridHeight = EditorGUILayout.IntSlider("Grid Height", gen.gridHeight, 1, 10);
-                gen.gridDepth = EditorGUILayout.IntSlider("Grid Depth", gen.gridDepth, 1, 10);
-            }
-            GUILayout.EndVertical();
-
-
-            advancedGridFoldOut = EditorGUILayout.Foldout(advancedGridFoldOut, "Advanced Grid Allowed Choices");
-            if (advancedGridFoldOut) {
-                GUILayout.Label("hahah");
-            }
-        }
-
-        
-            GUILayout.Space(10f);
-        if (GUILayout.Button("Regenerate Grid")) gen.regenerateGrid();
-        if (gen.timeBetweenSpawning > 0)
-        {
-            if (GUILayout.Button("Regenerate Enviroment")) gen.StartCoroutine(gen.generateMap());
-        }
-        else
-        {
-            if (GUILayout.Button("Regenerate Enviroment")) gen.generateMapVoid();
-        }
-            GUILayout.Space(10f);
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("allowedAssetNumbers"));
-        serializedObject.ApplyModifiedProperties();
 
 
     }

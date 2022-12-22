@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f72be2d1e03026f42a44a5db015e384a, type: 3}
   m_Name: Grass
   m_EditorClassIdentifier: 
-  assetName: Grass
-  assetId: 1
-  minVerticalLevel: 0
-  maxVerticalLevel: 3
-  percentageAllowed: 0.8
+  assetLogo: {fileID: 0}
+  facingDir: 0
+  minimumAxisLimit: {x: 0, y: 0, z: 0}
+  maximumAxisLimit: {x: 50, y: 4, z: 50}
+  percentageChanceOfAsset: 0.65
   primaryAsset: {fileID: 7417807077359060622, guid: 0e265d3a924b56f47b4ff6e7162e5d00, type: 3}
   allowedAssetsAbove:
   - {fileID: 11400000, guid: 25c0f138c0da1b74d8aeef40ef529737, type: 2}

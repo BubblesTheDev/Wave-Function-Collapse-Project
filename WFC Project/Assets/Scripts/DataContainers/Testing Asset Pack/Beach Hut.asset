@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f72be2d1e03026f42a44a5db015e384a, type: 3}
   m_Name: Beach Hut
   m_EditorClassIdentifier: 
-  assetName: Beach Hut
-  assetId: 5
-  minVerticalLevel: 2
-  maxVerticalLevel: 5
-  percentageAllowed: 0.1
+  assetLogo: {fileID: 0}
+  facingDir: 0
+  minimumAxisLimit: {x: 1, y: 2, z: 1}
+  maximumAxisLimit: {x: 49, y: 6, z: 49}
+  percentageChanceOfAsset: 0.35
   primaryAsset: {fileID: 1623918670908048744, guid: 63c1a5782a415f640ac183f276797a01, type: 3}
   allowedAssetsAbove:
   - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
@@ -24,17 +24,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e40cff670e67b5048963d360a57cf26e, type: 2}
   allowedAssetsRight:
   - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
-  - {fileID: 11400000}
-  - {fileID: 11400000, guid: 25c0f138c0da1b74d8aeef40ef529737, type: 2}
   allowedAssetsLeft:
   - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
-  - {fileID: 11400000}
-  - {fileID: 11400000, guid: 25c0f138c0da1b74d8aeef40ef529737, type: 2}
   allowedAssetsForward:
   - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
-  - {fileID: 11400000}
-  - {fileID: 11400000, guid: 25c0f138c0da1b74d8aeef40ef529737, type: 2}
   allowedAssetsBackward:
   - {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
-  - {fileID: 11400000}
-  - {fileID: 11400000, guid: 25c0f138c0da1b74d8aeef40ef529737, type: 2}

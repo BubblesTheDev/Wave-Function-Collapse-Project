@@ -362,23 +362,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellStartingPos: {fileID: 838287154}
-  gridWidth: 15
-  gridHeight: 4
-  gridDepth: 15
-  cellSizeX: 1
-  cellSizeY: 1
-  cellSizeZ: 1
-  centerGridOnGeneration: 0
-  dataList: {fileID: 11400000, guid: 1246f05b93b0ebd429fe79bb9a664dfd, type: 2}
-  voidAsset: {fileID: 11400000, guid: ccac0d5a4fc078145b2a0b6804c61817, type: 2}
-  startingCellId: {x: 8, y: 0, z: 8}
-  allowedAssetNumbers: []
-  edgeFillList: {fileID: 0}
-  emptySpacesLeftOnLevel: 0
-  displayCellIDs: 1
+  gridSize: {x: 50, y: 10, z: 50}
+  cellSizes: {x: 1, y: 1, z: 1}
+  dataList: {fileID: 11400000, guid: a7607f32d899981449e4210beb61180a, type: 2}
+  voidAsset: {fileID: 11400000, guid: 75129e25ba889a74db2e766bfe3be9ad, type: 2}
+  startingCellId: {x: 0, y: 0, z: 0}
+  chosenData: {fileID: 0}
+  axisToCheck: 2
+  adjacentAxis: -1
+  displayCellIDs: 0
   displayCellLines: 0
-  advancedSettings: 0
-  timeBetweenSpawning: 0.1
+  timeBetweenSpawning: 0
+  IdToCheck: {x: 2, y: 0, z: 2}
 --- !u!4 &1456003384
 Transform:
   m_ObjectHideFlags: 0
