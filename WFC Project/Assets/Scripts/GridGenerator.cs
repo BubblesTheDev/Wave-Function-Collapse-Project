@@ -5,51 +5,62 @@ using System.Linq;
 using System;
 
 public static class GridGenerator {
+
+    //A function to generate a grid that returns a 3d array, used in several places, mostly to create the grid that the assets will embody
     public static gridCell[,,] generateGrid(Vector3Int gridSize, Vector3 cellSizes, assetDataList listOfAssets, GameObject gridStartingPos) {
 
+        //makes sure there are no errors for grid size
         if (gridSize.x == 0 || gridSize.y == 0 || gridSize.z == 0) Debug.LogError("The grid given, does not have a size above 0 in one of its axis");
 
-
+        //Creates a new 3d array with the spesified sizes
         gridCell[,,] gridToReturn = new gridCell[gridSize.x,gridSize.y,gridSize.z];
 
 
+        //Itterates through each axis of the array and sets its allowed assets for the cell into what is allowed in it.
         for (int y  = 0; y < gridSize.y; y++) {
             for (int x = 0; x < gridSize.z; x++) {
                 for (int z = 0; z < gridSize.z; z++) {
 
                     Vector3Int tempCellId = new Vector3Int(x,y,z);
 
+                    //Calls the get allowed starter assets, and sets a new assetData list to these allowed starter assets
                     List<assetData> allowedAssetsForThisCell = GridGenerator.getAllowedStarterAssets(listOfAssets, tempCellId, gridSize);
 
+                    //Then creates a new gridcell at the index, and assigns its ID, its world position of the cell, its size, and its allowed starter assets
                     gridToReturn[x, y, z] = new gridCell(tempCellId, getWorldPosOfCell(tempCellId, cellSizes, gridStartingPos), cellSizes, allowedAssetsForThisCell);
                 }
 
             }
         }
 
-
+        //Then returns that grid ending the function
         return gridToReturn;
     }
 
+    //A function to return the allowed starter assets within a given cell
     public static List<assetData> getAllowedStarterAssets(assetDataList listOfAssets, Vector3Int cellId, Vector3Int gridSize) {
         List<assetData> dataListToReturn = new List<assetData>();
-        string allAssets = "Assets At " + cellId + " include ";
+        //Debug line //string allAssets = "Assets At " + cellId + " include ";
 
         for (int i = 0; i < listOfAssets.listOfAssets.Count; i++) {
-
+            
+            //A precaution in order to set the maximum asset limit to the current maxiumum size its allowed, due to grid being modular and unpredictable
             if (listOfAssets.listOfAssets[i].maximumAxisLimit.x == 0 || listOfAssets.listOfAssets[i].maximumAxisLimit.x > gridSize.x) listOfAssets.listOfAssets[i].maximumAxisLimit.x = gridSize.x - listOfAssets.listOfAssets[i].minimumAxisLimit.x;
             if (listOfAssets.listOfAssets[i].maximumAxisLimit.y == 0 || listOfAssets.listOfAssets[i].maximumAxisLimit.y > gridSize.y) listOfAssets.listOfAssets[i].maximumAxisLimit.y = gridSize.y - listOfAssets.listOfAssets[i].minimumAxisLimit.y;
             if (listOfAssets.listOfAssets[i].maximumAxisLimit.z == 0 || listOfAssets.listOfAssets[i].maximumAxisLimit.z > gridSize.z) listOfAssets.listOfAssets[i].maximumAxisLimit.z = gridSize.z - listOfAssets.listOfAssets[i].minimumAxisLimit.z;
 
+            //Detects if the cell is within a location inside the minimum and maximum axis limit of that asset, 
+            //If true, it then adds that asset to the list to return.
             if (cellId.x >= listOfAssets.listOfAssets[i].minimumAxisLimit.x && cellId.x < listOfAssets.listOfAssets[i].maximumAxisLimit.x
                 && cellId.y >= listOfAssets.listOfAssets[i].minimumAxisLimit.y  && cellId.y < listOfAssets.listOfAssets[i].maximumAxisLimit.y 
                 && cellId.z >= listOfAssets.listOfAssets[i].minimumAxisLimit.z  && cellId.z < listOfAssets.listOfAssets[i].maximumAxisLimit.z) {
                     dataListToReturn.Add(listOfAssets.listOfAssets[i]);
-                allAssets = allAssets + listOfAssets.listOfAssets[i].name + ", ";
+                //Debug line //allAssets = allAssets + listOfAssets.listOfAssets[i].name + ", ";
             }
         }
 
-        //Debug.Log(allAssets);
+        //Debug line //Debug.Log(allAssets);
+        //This resorts the data list to return by the percentage chance of each asset 
         dataListToReturn = dataListToReturn.OrderBy(x => x.percentageChanceOfAsset).ToList();
 
         return dataListToReturn;
